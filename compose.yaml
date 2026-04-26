@@ -1,0 +1,52 @@
+
+services:
+###> doctrine/doctrine-bundle ###
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    depends_on:
+      - database
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - vendor_data:/app/vendor
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: "mysql://app:root@database:3306/ladech_db?serverVersion=8.0&charset=utf8"
+    command: php -S 0.0.0.0:8000 -t public
+    ports:
+      - "8001:8000"
+  database:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ladech_db}
+      MYSQL_USER: ${MYSQL_USER:-app}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - database
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80"
+###< doctrine/doctrine-bundle ###
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  mysql_data:
+  vendor_data:
+###< doctrine/doctrine-bundle ###
