@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TeamCategory index{% endblock %}
+
+{% block body %}
+    <h1>TeamCategory index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for team_category in team_categories %}
+            <tr>
+                <td>{{ team_category.id }}</td>
+                <td>{{ team_category.name }}</td>
+                <td>
+                    <a href="{{ path('team_category_show', {'id': team_category.id}) }}">show</a>
+                    <a href="{{ path('team_category_update', {'id': team_category.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Pas de catégories pour l'instant</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('team_category_new') }}">Ajouter une nouvelle catégorie</a>
+{% endblock %}

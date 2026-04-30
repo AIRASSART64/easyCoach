@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TeamCategory{% endblock %}
+
+{% block body %}
+    <h1>La catégorie d'équpe </h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ team_category.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ team_category.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('team_category_index') }}">Retour à la liste</a>
+
+    <a href="{{ path('team_category_update', {'id': team_category.id}) }}">Modifier la catégorie</a>
+
+    {{ include('team_category/_delete_form.html.twig') }}
+{% endblock %}

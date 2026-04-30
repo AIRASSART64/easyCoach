@@ -1,24 +1,102 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}easyCoach{% endblock %}</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚡</text></svg>">
 
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
-    </head>
-    <body>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 4px solid #4f46e5 !important;
+            outline-offset: 2px;
+        }
+
+        label {
+            font-weight: 900 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container textarea {
+            width: 100%;
+            height: 3rem;
+            padding: 0 1rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #0f172a;
+            border-radius: 0;
+            font-weight: 500;
+            font-size: 1.125rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-container input:focus {
+            border-color: #4f46e5;
+        }
+
+  
+        .form-container label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.05em;
+        }
+
+        .form-container ul {
+            list-style: none;
+            padding: 0;
+            margin: -1rem 0 1.5rem 0;
+            color: #dc2626;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-slate-950 antialiased">
+    <nav class="bg-slate-950 text-white sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+            <span class="text-2xl font-black tracking-tighter italic">EASYCOACH⚡</span>
+
+            <div class="flex items-center gap-4">
+                {% if app.user %}
+                <div class="bg-indigo-600 px-3 py-1 rounded font-bold text-sm">
+                    {{ app.user.firstname|upper }}
+                </div>
+                {% endif %}
+                <button onclick="toggleMenu()" class="p-2 border-2 border-white rounded-md">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="p-4 space-y-6">
         {% block body %}{% endblock %}
-    </body>
+    </main>
+</body>
+
 </html>

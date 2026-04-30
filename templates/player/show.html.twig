@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil : {{ player.firstname }} {{ player.name }}{% endblock %}
+
+{% block body %}
+<div class="max-w-xl mx-auto px-4 mt-6 pb-20">
+ 
+    <div class="mb-8">
+        <h1 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+            {{ player.firstname }}
+            <span class="text-indigo-600">{{ player.name }}</span>
+        </h1>
+    </div>
+
+    <div class="space-y-6">
+    
+        <div class="bg-white border-2 border-slate-900 p-6">
+            <h2 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Informations Joueur</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <span class="block text-xs font-bold uppercase text-slate-500">Date de naissance</span>
+                    <span class="text-lg font-bold">{{ player.birthDate ? player.birthDate|date('d/m/Y') : 'Non renseignée' }}</span>
+                </div>
+
+                {% if player.phone %}
+                <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+                    <div>
+                        <span class="block text-xs font-bold uppercase text-slate-500">Téléphone</span>
+                        <span class="text-lg font-bold">{{ player.phone }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if player.email %}
+                <div class="pt-2 border-t border-slate-100">
+                    <span class="block text-xs font-bold uppercase text-slate-500">Email</span>
+                    <span class="text-md font-bold break-all">{{ player.email }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="bg-slate-50 border-2 border-slate-900 p-6">
+            <h2 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Coordonnées du resposable légal</h2>
+            
+            <div class="space-y-4">
+                {% if player.responsablePhone %}
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span class="block text-xs font-bold uppercase text-slate-500">Tel. Responsable</span>
+                        <span class="text-lg font-bold">{{ player.responsablePhone }}</span>
+                    </div>
+                
+                </div>
+                {% else %}
+                    <p class="text-sm italic text-red-500 font-bold uppercase">Aucun numéro d'urgence !</p>
+                {% endif %}
+
+                {% if player.responsableEmail %}
+                <div class="pt-2 border-t border-slate-200">
+                    <span class="block text-xs font-bold uppercase text-slate-500">Email Responsable</span>
+                    <span class="text-md font-bold break-all">{{ player.responsableEmail }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Actions de bas de page #}
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <a href="{{ path('player_update', {'id': player.id}) }}" class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-slate-50 transition-all">
+                Modifier
+            </a>
+            <a href="{{ path('player_index') }}" class="bg-slate-900 text-white text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 transition-all">
+                Retour
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

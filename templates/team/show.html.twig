@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil : {{ team.name }} {% endblock %}
+
+{% block body %}
+<div class="max-w-xl mx-auto px-4 mt-6 pb-20">
+   
+    <div class="mb-8">
+        <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+            {{ team.name}}
+        </h2>
+    </div>
+
+    <div class="space-y-6">
+   
+        <div class="bg-white border-2 border-slate-900 p-6">
+            <h3 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">{{team.category.name}}</h3>
+            <p>
+               {% for player in team.player %}
+                {{player.firstname}} {{player.name}}
+                
+               {% endfor %}
+            </p>
+        </div>
+
+
+   
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <a href="{{ path('team_update', {'id': team.id}) }}" class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-slate-50 transition-all">
+                Modifier l'équipe
+            </a>
+            <a href="{{ path('team_index') }}" class="bg-slate-900 text-white text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 transition-all">
+                Toutes les équipes
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

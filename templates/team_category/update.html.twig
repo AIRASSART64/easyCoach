@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TeamCategory{% endblock %}
+
+{% block body %}
+    <h1>Modifier les catégories d'équipe</h1>
+
+    {{ include('team_category/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('team_category_index') }}">Retour à la liste</a>
+
+    {{ include('team_category/_delete_form.html.twig') }}
+{% endblock %}

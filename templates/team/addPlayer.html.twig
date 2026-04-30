@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto mt-10 p-6">
+    <h1 class="text-3xl font-black uppercase mb-6">
+        Modifier l'effectif : <span class="text-indigo-600">{{ team.name }}</span>
+    </h1>
+
+    {{ form_start(form) }}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {% for child in form.player %}
+                <label class="flex items-center p-4 border-2 border-slate-900 cursor-pointer hover:bg-slate-50 transition-colors">
+                    {{ form_widget(child, {'attr': {'class': 'w-5 h-5 mr-3 accent-indigo-600'}}) }}
+                    <span class="font-bold text-slate-800 uppercase text-sm">{{ child.vars.label }}</span>
+                </label>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="bg-slate-900 text-white px-10 py-4 font-black uppercase hover:bg-indigo-600 transition-all">
+            Enregistrer l'effectif
+        </button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

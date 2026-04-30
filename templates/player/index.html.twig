@@ -1,0 +1,71 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Joueurs{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto px-4 mt-8 pb-20">
+
+  
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+        <div>
+            <h1 class="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+                Mes <span class="text-indigo-600">Joueurs</span>
+            </h1>
+            <p class="text-slate-500 font-bold uppercase text-xs mt-2 tracking-widest">Gestion de l'effectif</p>
+        </div>
+
+        <a href="{{ path('player_new') }}" 
+           class="inline-block bg-slate-900 text-white text-center px-8 py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 hover:translate-x-1 hover:-translate-y-1 transition-all">
+           + Ajouter un joueur
+        </a>
+    </div>
+
+  
+    <div class="space-y-4">
+        {% for player in players %}
+        <div class="bg-white border-2 border-slate-900 p-5 rounded-none flex flex-col md:flex-row md:items-center justify-between gap-4">
+            
+            <div class="flex-1">
+                <h2 class="text-xl font-black uppercase text-slate-900 leading-tight">
+                    {{ player.firstname }} {{ player.name }}
+                </h2>
+                <div class="flex gap-4 mt-1">
+                    <span class="text-xs font-bold text-slate-500 uppercase italic">
+                        
+                        {{ player.birthDate ? player.birthDate|date('d/m/Y') : 'NC' }}
+                    </span>
+                </div>
+            </div>
+
+        
+            <div class="flex gap-2">
+      
+                <a href="{{ path('player_show', {'id': player.id}) }}" 
+                   class="flex-1 md:flex-none text-center border-2 border-slate-900 p-3 hover:bg-slate-100 transition-colors" 
+                   title="Détails">
+                    🔍
+                </a>
+               
+          
+                <a href="{{ path('player_update', {'id': player.id}) }}" 
+                   class="flex-1 md:flex-none text-center bg-indigo-600 border-2 border-slate-900 p-3 text-white hover:bg-indigo-700 transition-colors" 
+                   title="Modifier">
+                    ✏️
+                </a>
+               
+            
+                <div class="flex-1 md:flex-none">
+                    {% include "player/_delete_form.html.twig" %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="border-2 border-dashed border-slate-300 p-12 text-center">
+            <p class="text-slate-500 font-bold uppercase text-sm">Aucun joueur enregistré</p>
+        </div>
+    {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
