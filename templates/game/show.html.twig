@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du match qui aura lieu le : {{ game.date ? game.date|date('d/m/y') : 'Date à définir' }}{% endblock %}
+
+{% block body %}
+<div class="max-w-xl mx-auto px-4 mt-6 pb-20">
+ 
+    <div class="mb-8">
+        <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+           Equipe :  {{ game.team.name }}
+        </h2>
+         <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+           Equipe adverse :  {{ game.opposingTeam }}
+        </h2>
+
+    </div>
+
+    <div class="space-y-6">
+    
+        <div class="bg-white border-2 border-slate-900 p-6">
+            <h3 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Informations sur le match</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <span class="block text-xs font-bold uppercase text-slate-500">Date du match : 
+                    <span class="inline-block bg-indigo-600 text-white text-[10px] font-black px-2 py-0.5 uppercase mb-1">
+                {% if game.date|date('d/m/y') %}
+                {{ game.date|date('d/m/y') }}
+                {% else %}
+                À programmer
+                {% endif %}
+                </span>
+                </span>
+                </div>
+                <div>
+                    <span class="block text-xs font-bold uppercase text-slate-500">Lieu du match : <span class="text-lg font-bold">{{ game.place }}</span></span>
+                    
+                </div>
+
+                {% if game.scoreHome %}
+                <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+                    <div>
+                        <span class="block text-xs font-bold uppercase text-slate-500">Score à domicile : <span class="text-lg font-bold">{{ game.scoreHome }}</span></span>
+    
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if game.scoreAway %}
+                <div class="pt-2 border-t border-slate-100">
+                    <span class="block text-xs font-bold uppercase text-slate-500">Score à l'exterieur : <span class="text-lg font-bold break-all">{{ game.scoreAway }}</span> </span>
+                    
+                </div>
+                {% endif %}
+                {% if game.coachObservation %}
+                <div class="pt-2 border-t border-slate-100">
+                    <span class="block text-xs font-bold uppercase text-slate-500">Commentaires</span>
+                    <p class="text-xs font-bold break-all">{{ game.coachObservation }}</p>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <a href="{{ path('game_update', {'id': game.id}) }}" class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-slate-50 transition-all">
+                Modifier
+            </a>
+            <a href="{{ path('game_index') }}" class="bg-slate-900 text-white text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 transition-all">
+                Retour
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

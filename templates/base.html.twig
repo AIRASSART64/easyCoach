@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}easyCoach{% endblock %}</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚡</text></svg>">
@@ -52,7 +53,7 @@
             border-color: #4f46e5;
         }
 
-  
+
         .form-container label {
             display: block;
             font-size: 0.75rem;
@@ -70,22 +71,47 @@
             font-weight: 700;
             font-size: 0.875rem;
         }
+
+        @media screen and (max-width: 768px) {
+
+            input,
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+        }
+
+    
+        .btn-mobile {
+            @apply w-full py-5 text-lg font-black uppercase border-4 border-slate-900 transition-all active:scale-95;
+        }
+
+        .form-container input:active,
+        .form-container select:active {
+            background-color: #f8fafc;
+        }
+        main {
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 
 <body class="bg-white text-slate-950 antialiased">
-    <nav class="bg-slate-950 text-white sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-            <span class="text-2xl font-black tracking-tighter italic">EASYCOACH⚡</span>
+   <nav class="bg-slate-950 text-white sticky top-0 z-50 border-b-4 border-indigo-600">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+        
+            <a href="{{ path('team_index') }}" class="text-xl font-black tracking-tighter italic">EASYCOACH⚡</a>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
                 {% if app.user %}
-                <div class="bg-indigo-600 px-3 py-1 rounded font-bold text-sm">
-                    {{ app.user.firstname|upper }}
+                <div class="bg-indigo-600 px-3 py-1 border-2 border-indigo-400 font-black text-[10px] uppercase">
+                    {{ app.user.firstname}} 
                 </div>
                 {% endif %}
-                <button onclick="toggleMenu()" class="p-2 border-2 border-white rounded-md">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          
+                <button onclick="toggleMenu()"
+                    class="p-3 bg-slate-800 border-2 border-white active:bg-indigo-600 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="M4 6h16M4 12h16m-7 6h7"></path>
                     </svg>
@@ -97,6 +123,31 @@
     <main class="p-4 space-y-6">
         {% block body %}{% endblock %}
     </main>
+    <footer class="bg-slate-950 text-white mt-10 border-t-8 border-indigo-600">
+    <div class="px-6 py-10">
+        <div class="flex flex-col items-center text-center space-y-8">
+            
+            
+            {# Menu de navigation rapide en grille 2x2 #}
+            <div class="grid grid-cols-2 gap-4 w-full">
+                <a href="{{ path('team_index') }}" class="py-4 border-2 border-slate-800 font-bold uppercase text-xs">Équipes</a>
+                <a href="#" class="py-4 border-2 border-slate-800 font-bold uppercase text-xs">Planning</a>
+                <a href="#" class="py-4 border-2 border-slate-800 font-bold uppercase text-xs">Matchs</a>
+                <a href="#" class="py-4 border-2 border-slate-800 font-bold uppercase text-xs">Profil</a>
+            </div>
+
+            {# Réseaux sociaux plus grands pour le clic #}
+            <div class="flex gap-8 py-4">
+                <div class="w-12 h-12 border-2 border-white flex items-center justify-center font-black text-lg">FB</div>
+                <div class="w-12 h-12 border-2 border-white flex items-center justify-center font-black text-lg">IG</div>
+            </div>
+
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                © {{ "now"|date("Y") }} 
+            </p>
+        </div>
+    </div>
+</footer>
 </body>
 
 </html>

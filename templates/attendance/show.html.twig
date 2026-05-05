@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de l'état des présences {% endblock %}
+
+{% block body %}
+<div class="max-w-xl mx-auto px-4 mt-6 pb-20">
+ 
+    <div class="mb-8">
+        <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+             {% if attendance.startDate is not null %}
+               Date de l'appel :  {{ attendance.startDate|date('d/m/y') }}
+                {% else %}
+                À programmer
+                {% endif %}
+        </h2>
+
+    </div>
+
+    <div class="space-y-6">
+    
+        <div class="bg-white border-2 border-slate-900 p-6">
+            <h3 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Informations sur l'état des présences </h3>
+            
+            <div class="space-y-4">
+                {% if attendance.player.name and attendance.player.firstname %}
+                <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+                    <div>
+                        <span class="block text-xs font-bold uppercase text-slate-500">Joueur concerné : <span class="text-lg font-bold">{{attendance.player.firstname }} {{attendance.player.name}}</span></span>
+    
+                    </div>
+                </div>
+                {% endif %}
+               
+                {% if attendance.game is not null %}
+                <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+                    <div>
+                        <span class="block text-xs font-bold uppercase text-slate-500"> <span class="text-lg font-bold"> Date du match concerné : {{attendance.game.date|date('(d/m/Y)') }}</span></span>
+                        <span class="block text-xs font-bold uppercase text-slate-500"> <span class="text-lg font-bold"> contre l'équipe : {{attendance.game.opposingTeam}}</span></span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if  attendance.training is not null  %}
+                <div class="pt-2 border-t border-slate-100">
+                    <span class="block text-xs font-bold uppercase text-slate-500"> : <span class="text-lg font-bold break-all">Date de la séance d'entraînement concerné : {{attendance.training.date|date('(d/m/Y)') }}</span> </span>
+                    
+                </div>
+                {% endif %}
+                {% if  attendance.status %}
+                <div class="pt-2 border-t border-slate-100">
+                    <span class="block text-xs font-bold uppercase text-slate-500"> : <span class="text-lg font-bold break-all">Statut : {{attendance.status.name }}</span> </span>
+                    
+                </div>
+                {% endif %}
+
+                {% if attendance.coachObservation %}
+                <div class="pt-2 border-t border-slate-100">
+                    <span class="block text-xs font-bold uppercase text-slate-500">Commentaires</span>
+                    <p class="text-xs font-bold break-all">{{ attendances.coachObservation }}</p>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <a href="{{ path('attendance_update', {'id': attendance.id}) }}" class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-slate-50 transition-all">
+                Modifier
+            </a>
+            <a href="{{ path('attendance_index') }}" class="bg-slate-900 text-white text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 transition-all">
+                Retour
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

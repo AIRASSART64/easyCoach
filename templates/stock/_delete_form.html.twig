@@ -1,0 +1,11 @@
+<form method="post" action="{{ path('stock_delete', {'id': stock.id}) }}"
+    onsubmit="return confirm('Confirmez-vous la suppression définitive du stock ?');" 
+    class="flex items-center">
+    
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock.id) }}">
+    
+    <button type="submit" 
+            class="text-[10px] font-black uppercase tracking-widest text-red-500 hover:text-red-700 active:scale-95 transition-all">
+        Supprimer
+    </button>
+</form>

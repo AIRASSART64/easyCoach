@@ -1,74 +1,63 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Liste des équipes{% endblock %}
 
 {% block body %}
-<div class="max-w-4xl mx-auto px-4 mt-8 pb-20">
 
-  
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
-        <div>
-            <h1 class="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">
-                Toutes <span class="text-indigo-600">les équipes</span>
-            </h1>
-            <p class="text-slate-500 font-bold uppercase text-xs mt-2 tracking-widest">Gestion des équipes</p>
+<div class="max-w-md mx-auto px-4 mt-6 pb-20">
+
+
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+            Mes <span class="text-indigo-600">équipes</span>
+        </h1>
+
+        <div class="flex justify-center mt-6">
+            <a href="{{ path('team_new') }}"
+                class="bg-slate-900 text-white px-8 py-3 font-black uppercase text-xs tracking-widest active:bg-indigo-600 transition-colors">
+                + Créer une équipe
+            </a>
         </div>
-
-        <a href="{{ path('team_new') }}" 
-           class="inline-block bg-slate-900 text-white text-center px-8 py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 hover:translate-x-1 hover:-translate-y-1 transition-all">
-           + Ajouter une équipe
-        </a>
     </div>
 
-  
+
     <div class="space-y-4">
         {% for team in teams %}
-        <div class="bg-white border-2 border-slate-900 p-5 rounded-none flex flex-col md:flex-row md:items-center justify-between gap-4">
-            
-            <div class="flex-1">
-                <h2 class="text-xl font-black uppercase text-slate-900 leading-tight">
-                   Nom de l'équipe :  {{ team.name }}
-                </h2>
-                <div class="flex gap-4 mt-1">
-                    <span class="text-xs font-bold text-slate-500 uppercase italic">
-                        
-                        Category de l'équipe{{ team.category.name}}
+        <div
+            class="bg-white border-4 border-slate-900  p-4 transition-transform active:translate-x-1 active:translate-y-1 active:shadow-none">
+
+            <div class="flex justify-between items-start mb-4 active:translate-x-0.5 active:translate-y-0.5" >
+                <div class="cursor-pointer" data-url="{{ path('team_show', {'id': team.id}) }}"
+                    onclick="window.location.href=this.dataset.url">
+                    <span
+                        class="inline-block bg-indigo-600 text-white text-[10px] font-black px-2 py-0.5 uppercase mb-1">
+                        {{ team.category.name }}
                     </span>
+                    <h2 class="text-2xl font-black uppercase text-slate-900 tracking-tighter">
+                        {{ team.name }}
+                    </h2>
+                    <p class="text-slate-500 text-xs font-bold uppercase">
+                        {{ team.player|length }} Joueurs inscrits
+                    </p>
                 </div>
+
+                {# Action rapide : Ajouter un joueur #}
+                <a href="{{ path('team_player', {'id': team.id}) }}"
+                    class="bg-yellow-400 border-2 border-slate-900 p-2 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] active:shadow-none">
+                    <span class="text-xl">➕</span>
+                </a>
             </div>
 
-        
-            <div class="flex gap-2">
-      
-                <a href="{{ path('team_show', {'id': team.id}) }}" 
-                   class="flex-1 md:flex-none text-center border-2 border-slate-900 p-3 hover:bg-slate-100 transition-colors" 
-                   title="Détails">
-                    🔍
-                </a>
-                <a href="{{ path('team_player', {'id': team.id}) }}" 
-               class="bg-yellow-400 border-2 border-slate-900 px-4 py-2 font-black uppercase text-xs hover:bg-yellow-500 transition-colors">
-               👥 Effectif ({{ team.getPlayer|length }})
-            </a>
-               
-          
-                <a href="{{ path('team_update', {'id': team.id}) }}" 
-                   class="flex-1 md:flex-none text-center bg-indigo-600 border-2 border-slate-900 p-3 text-white hover:bg-indigo-700 transition-colors" 
-                   title="Modifier">
-                    ✏️
-                </a>
-               
-            
-                <div class="flex-1 md:flex-none">
+
+            <div class="flex border-t-2 border-slate-900 mt-4 pt-3 gap-4">
+                <a href="{{ path('team_update', {'id': team.id}) }}"
+                    class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600">Modifier</a>
+                <div class="text-[10px] font-black uppercase tracking-widest text-red-500">
                     {% include "team/_delete_form.html.twig" %}
                 </div>
             </div>
         </div>
-    {% else %}
-        <div class="border-2 border-dashed border-slate-300 p-12 text-center">
-            <p class="text-slate-500 font-bold uppercase text-sm">Aucune équipe énregistrée</p>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 
 </div>

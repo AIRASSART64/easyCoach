@@ -31,9 +31,16 @@ class Team
     #[ORM\ManyToMany(targetEntity: Player::class, inversedBy: 'teams')]
     private Collection $player;
 
+    /**
+     * @var Collection<int, Game>
+     */
+    #[ORM\OneToMany(targetEntity: Game::class, mappedBy: 'team')]
+    private Collection $games;
+
     public function __construct()
     {
         $this->player = new ArrayCollection();
+        $this->games = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,6 +104,36 @@ class Team
     public function removePlayer(Player $player): static
     {
         $this->player->removeElement($player);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Game>
+     */
+    public function getGames(): Collection
+    {
+        return $this->games;
+    }
+
+    public function addGame(Game $game): static
+    {
+        if (!$this->games->contains($game)) {
+            $this->games->add($game);
+            $game->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGame(Game $game): static
+    {
+        if ($this->games->removeElement($game)) {
+            // set the owning side to null (unless already changed)
+            if ($game->getTeam() === $this) {
+                $game->setTeam(null);
+            }
+        }
 
         return $this;
     }

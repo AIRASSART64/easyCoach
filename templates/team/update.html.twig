@@ -4,29 +4,30 @@
 <div class="max-w-xl mx-auto px-4 mt-6 pb-12">
     
     <h2 class="text-2xl font-black uppercase tracking-tight mb-8 text-slate-900">
-        Ajouter un joueur
+        Modifier une équipe
     </h2>
 
 
     <div class="bg-white border-2 border-slate-900 p-6 md:p-8">
-        {{ form_start(formPlayer, {'attr': {'class': 'space-y-6'}}) }}
+        {{ form_start(formTeam, {'attr': {'class': 'space-y-6'}}) }}
             
             
             <div class="form-container">
-                {{ form_widget(formPlayer) }}
+                {{ form_widget(formTeam) }}
             </div>
 
             <button type="submit" class="w-full bg-slate-900 text-white text-lg font-bold py-4 border-2 border-slate-900 hover:bg-indigo-600 hover:border-indigo-600 transition-all uppercase">
-                Enregistrer le joueur
+                Enregistrer l'équipe 
             </button>
             
-        {{ form_end(formPlayer) }}
+        {{ form_end(formTeam) }}
        
     </div>
 
+  
     <div class="mt-6">
-        <a href="{{ path('player_index') }}" class="block w-full text-center bg-white text-slate-900 text-sm font-black py-4 border-2 border-slate-900 hover:bg-slate-50 transition-all uppercase">
-            ← Tous les joueurs
+        <a href="{{ path('team_index') }}" class="block w-full text-center bg-white text-slate-900 text-sm font-black py-4 border-2 border-slate-900 hover:bg-slate-50 transition-all uppercase">
+            ← Toutes les équipes
         </a>
     </div>
 </div>

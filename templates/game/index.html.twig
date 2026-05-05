@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les matchs{% endblock %}
+
+{% block body %}
+
+<div class="max-w-md mx-auto px-4 mt-6 pb-20">
+
+
+    <div class="mb-10 text-center">
+        <h2 class="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+            Les  <span class="text-indigo-600">matchs</span>
+        </h2>
+
+        <div class="flex justify-center mt-6">
+            <a href="{{ path('game_new') }}"
+                class="bg-slate-900 text-white px-8 py-3 font-black uppercase text-xs tracking-widest active:bg-indigo-600 transition-colors">
+                + Créer un match
+            </a>
+        </div>
+    </div>
+
+
+    <div class="space-y-4">
+        {% for game in games %}
+        <div
+            class="bg-white border-4 border-slate-900  p-4 transition-transform active:translate-x-1 active:translate-y-1 active:shadow-none">
+
+            <div class="flex justify-between items-start mb-4 active:translate-x-0.5 active:translate-y-0.5" >
+                <div class="cursor-pointer" data-url="{{ path('game_show', {'id': game.id}) }}"
+                    onclick="window.location.href=this.dataset.url">
+                    <span class="inline-block bg-indigo-600 text-white text-[10px] font-black px-2 py-0.5 uppercase mb-1">
+             {% if game.date|date('d/m/y') %}
+                {{ game.date|date('d/m/y') }}
+            {% else %}
+                À programmer
+             {% endif %}
+            </span>
+                    <h3 class="text-2xl font-black uppercase text-slate-900 tracking-tighter">
+                       Equipe :  {{ game.team.name }}
+                    </h3>
+                    <h3 class="text-2xl font-black uppercase text-slate-900 tracking-tighter">
+                       Equipe adverse :  {{ game.opposingTeam }}
+                    </h3>
+                    <p class="text-slate-500 text-xs font-bold uppercase">
+                       Lieu du match :  {{game.place }} 
+                    </p>
+
+                </div>
+            </div>
+
+
+            <div class="flex border-t-2 border-slate-900 mt-4 pt-3 gap-4">
+                <a href="{{ path('game_update', {'id': game.id}) }}"
+                    class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600">Modifier</a>
+                <div class="text-[10px] font-black uppercase tracking-widest text-red-500">
+                    {% include "game/_delete_form.html.twig" %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

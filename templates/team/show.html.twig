@@ -1,38 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil : {{ team.name }} {% endblock %}
+{% block title %}Profil : {{ team.name }}{% endblock %}
 
 {% block body %}
-<div class="max-w-xl mx-auto px-4 mt-6 pb-20">
-   
-    <div class="mb-8">
-        <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
-            {{ team.name}}
+<div class="max-w-xl mx-auto px-4 mt-10 pb-20">
+    
+    {# En-tête de l'équipe #}
+    <div class="mb-10">
+        <span class="bg-indigo-600 text-white text-[10px] font-black uppercase px-2 py-1 mb-2 inline-block">
+            {{ team.category.name }}
+        </span>
+        <h2 class="text-5xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+            {{ team.name }}
         </h2>
+        <p class="text-slate-400 font-bold uppercase text-xs mt-2 tracking-widest">Effectif de l'équipe</p>
     </div>
 
-    <div class="space-y-6">
-   
-        <div class="bg-white border-2 border-slate-900 p-6">
-            <h3 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">{{team.category.name}}</h3>
-            <p>
-               {% for player in team.player %}
-                {{player.firstname}} {{player.name}}
-                
-               {% endfor %}
-            </p>
-        </div>
+    <div class="flex flex-col gap-3 mb-10">
+        {% for player in team.player %}
+            <div class="flex items-center justify-between p-4 border-4 border-slate-900 bg-white  hover:translate-x-1 hover:-translate-y-1 transition-all">
+                <div class="flex items-center gap-4">
+                  
+                    <div class="w-10 h-10 border-2 border-slate-900 bg-yellow-400 text-slate-900 flex items-center justify-center text-xs font-black uppercase ">
+                        {{ player.firstname|first }}{{ player.name|first }}
+                    </div>
+                    
+                    <div class="flex flex-col">
+                        <span class="font-black text-slate-900 uppercase text-sm leading-none">
+                            {{ player.firstname }}
+                        </span>
+                        <span class="font-black text-indigo-600 uppercase text-lg leading-none">
+                            {{ player.name }}
+                        </span>
+                    </div>
+                </div>
 
-
-   
-        <div class="grid grid-cols-2 gap-4 mt-8">
-            <a href="{{ path('team_update', {'id': team.id}) }}" class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-slate-50 transition-all">
-                Modifier l'équipe
-            </a>
-            <a href="{{ path('team_index') }}" class="bg-slate-900 text-white text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 transition-all">
-                Toutes les équipes
-            </a>
-        </div>
+                {% if player.position %}
+                    <span class="text-[10px] font-black px-2 py-1 bg-slate-900 text-white border-2 border-slate-900 uppercase">
+                        {{ player.position.value }}
+                    </span>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="p-8 border-4 border-dashed border-slate-200 text-center">
+                <p class="text-slate-400 font-black uppercase text-sm italic">Aucun joueur dans l'effectif</p>
+                <a href="{{ path('team_player', {'id': team.id}) }}" class="text-indigo-600 font-black uppercase text-xs underline mt-2 inline-block">Ajouter des joueurs</a>
+            </div>
+        {% endfor %}
     </div>
+
+  
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+         <a href="{{ path('team_player', {'id': team.id}) }}" 
+               class="bg-yellow-400 text-slate-900 text-center py-4 border-4 border-slate-900 font-black uppercase text-sm hover:bg-yellow-500 transition-all">
+                Ajouter un joueur ({{ team.getPlayer|length }})
+            </a>
+        <a href="{{ path('team_update', {'id': team.id}) }}" 
+           class="bg-green-400 text-slate-900 text-center py-4 border-4 border-slate-900 font-black uppercase text-sm hover:bg-green-500 transition-all">
+           Modifier l'équipe
+        </a>
+        <a href="{{ path('team_index') }}" 
+           class="bg-slate-900 text-white text-center py-4 border-4 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 transition-all">
+           Toutes les équipes
+        </a>
+    </div>
+
 </div>
 {% endblock %}

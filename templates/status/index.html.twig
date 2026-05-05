@@ -1,0 +1,63 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des statuts{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto px-4 mt-8 pb-20">
+
+  
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+        <div>
+            <h2 class="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+                Les <span class="text-indigo-600">Statuts</span>
+            </h2>
+           
+        </div>
+
+        <a href="{{ path('status_new') }}" 
+           class="inline-block bg-slate-900 text-white text-center px-8 py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 hover:translate-x-1 hover:-translate-y-1 transition-all">
+           + Ajouter un statut
+        </a>
+    </div>
+
+  
+    <div class="space-y-4">
+        {% for status in allStatus %}
+        <div class="bg-white border-2 border-slate-900 p-5 rounded-none flex flex-col md:flex-row md:items-center justify-between gap-4">
+            
+            <div class="flex-1">
+                <h3 class="text-xl font-black uppercase text-slate-900 leading-tight">
+                    {{ status.name }}
+                </h3>
+            </div>
+            <div class="flex gap-2">
+      
+                <a href="{{ path('status_show', {'id': status.id}) }}" 
+                   class="flex-1 md:flex-none text-center border-2 border-slate-900 p-3 hover:bg-slate-100 transition-colors" 
+                   title="Détails">
+                    🔍
+                </a>
+               
+          
+                <a href="{{ path('status_update', {'id': status.id}) }}" 
+                   class="flex-1 md:flex-none text-center bg-indigo-600 border-2 border-slate-900 p-3 text-white hover:bg-indigo-700 transition-colors" 
+                   title="Modifier">
+                    ✏️
+                </a>
+               
+            
+                <div class="flex-1 md:flex-none">
+                    {% include "status/_delete_form.html.twig" %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="border-2 border-dashed border-slate-300 p-12 text-center">
+            <p class="text-slate-500 font-bold uppercase text-sm">Aucun statut enregistré</p>
+        </div>
+    {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
