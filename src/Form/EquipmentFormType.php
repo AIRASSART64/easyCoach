@@ -39,7 +39,7 @@ class EquipmentFormType extends AbstractType
            
         ]])
             ->add('alert_level', IntegerType::class, [
-                'label' => "Quantité total",
+                'label' => "Quantité minimale requise ",
                 'required' => true,
                 'attr' => [
                  'min' => 0,                         

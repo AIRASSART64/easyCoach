@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\TypeStockManagment;
 use App\Repository\StockRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +19,7 @@ class Stock
     private ?int $quantity = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    private ?TypeStockManagment $type = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $date = null;
@@ -49,12 +50,12 @@ class Stock
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?TypeStockManagment
     {
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(TypeStockManagment $type): static
     {
         $this->type = $type;
 

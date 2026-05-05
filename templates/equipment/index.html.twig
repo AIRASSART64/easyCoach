@@ -1,20 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EquipmentController!{% endblock %}
+{% block title %}Gestion des équipements{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="max-w-md mx-auto px-4 mt-6 pb-20">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Hp/Desktop/Symfony/easyCoach/src/Controller/EquipmentController.php</code></li>
-        <li>Your template at <code>C:/Users/Hp/Desktop/Symfony/easyCoach/templates/equipment/index.html.twig</code></li>
-    </ul>
+
+    <div class="mb-10 text-center">
+        <h2 class="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">
+            Gestion  <span class="text-indigo-600"> des équipements</span>
+        </h2>
+
+        <div class="flex justify-center mt-6">
+            <a href="{{ path('equipment_new') }}"
+                class="bg-slate-900 text-white px-8 py-3 font-black uppercase text-xs tracking-widest active:bg-indigo-600 transition-colors">
+                + Créer un équipement
+            </a>
+        </div>
+    </div>
+
+
+    <div class="space-y-4">
+        {% for equipment in equipments %}
+        <div
+            class="bg-white border-4 border-slate-900  p-4 transition-transform active:translate-x-1 active:translate-y-1 active:shadow-none">
+
+            <div class="flex justify-between items-start mb-4 active:translate-x-0.5 active:translate-y-0.5" >
+                <div class="cursor-pointer" data-url="{{ path('equipment_show', {'id': equipment.id}) }}"
+                    onclick="window.location.href=this.dataset.url">
+                    
+                    <h3 class="text-2xl font-black uppercase text-slate-900 tracking-tighter">
+                       Nom de l'équipement : {{ equipment.name}}
+                    </h3>
+                   
+                  
+                </div>
+            </div>
+
+
+            <div class="flex border-t-2 border-slate-900 mt-4 pt-3 gap-4">
+                <a href="{{ path('equipment_update', {'id': equipment.id}) }}"
+                    class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600">Modifier</a>
+                <div class="text-[10px] font-black uppercase tracking-widest text-red-500">
+                    {% include "equipment/_delete_form.html.twig" %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
 </div>
 {% endblock %}
+

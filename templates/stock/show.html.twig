@@ -26,25 +26,22 @@
                     </div>
                 </div>
                  <div class="pt-2 border-t border-slate-100">
-                    <span class="block text-xs font-bold uppercase text-slate-500"> : <span class="text-lg font-bold break-all">Equipement concerné : {{stock.equipment.name}}</span> </span>
+                    <span class="block text-xs font-bold uppercase text-slate-500"> Equipement concerné :  <span class="text-lg font-bold break-all">{{stock.equipment.name}}</span> </span>
                     
                 </div>
         
                 <div class="flex justify-between items-center pt-2 border-t border-slate-100">
                     <div>
-                        <span class="block text-xs font-bold uppercase text-slate-500"> <span class="text-lg font-bold"> Quantité : {{stock.quantity }}</span></span>
+                        <span class="block text-xs font-bold uppercase text-slate-500"> Quantité :  <span class="text-lg font-bold"> {{stock.quantity }}</span></span>
                         
                     </div>
                 </div>
                 <div class="pt-2 border-t border-slate-100">
-                    <span class="block text-xs font-bold uppercase text-slate-500"> : <span class="text-lg font-bold break-all">Type  : {{stock.type.name}}</span> </span>
+                    <span class="block text-xs font-bold uppercase text-slate-500"> Type :<span class="text-lg font-bold break-all"> {{stock.type.value}}</span> </span>
                     
                 </div>
              
-                <div class="pt-2 border-t border-slate-100">
-                    <span class="block text-xs font-bold uppercase text-slate-500"> : <span class="text-lg font-bold break-all">Statut : {{attendance.status.name }}</span> </span>
-                    
-                </div>
+        
 
                 {% if stock.reason %}
                 <div class="pt-2 border-t border-slate-100">
