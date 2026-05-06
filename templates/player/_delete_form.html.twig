@@ -1,8 +1,8 @@
 <form method="post" action="{{ path('player_delete', {'id': player.id}) }}"
     onsubmit="return confirm('Confirmez-vous la suppression  définitive du joueur {{player.firstname}} {{player.name}} ?');" class="flex-1 md:flex-none">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ player.id) }}">
-    <button class="w-full h-full bg-red-600 border-2 border-slate-900 p-3 text-white hover:bg-red-700 transition-colors"
-        title="Supprimer">
-        🗑️
+    <button type="submit" 
+            class="text-[10px] font-black uppercase tracking-widest bg-red-500 text-white px-2 py-2 hover:text-white active:scale-95 transition-all">
+        Supprimer
     </button>
 </form>

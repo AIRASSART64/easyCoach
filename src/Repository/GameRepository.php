@@ -16,6 +16,24 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
+    public function findNextGame(\DateTimeInterface $now): ?Game
+    {
+    return $this->createQueryBuilder('g')
+        ->where('g.date >= :now')
+        ->setParameter('now', $now)
+        ->orderBy('g.date', 'ASC')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
+    
+    public function countAllGames(): int
+    {
+    return (int) $this->createQueryBuilder('g')
+        ->select('count(g.id)')
+        ->getQuery()
+        ->getSingleScalarResult();
+    }
     //    /**
     //     * @return Game[] Returns an array of Game objects
     //     */

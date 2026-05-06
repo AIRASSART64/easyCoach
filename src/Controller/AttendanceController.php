@@ -27,6 +27,7 @@ final class AttendanceController extends AbstractController
             'attendances' => $allAttendances
         ]);
     }
+    
     #[Route('/new', name: 'attendance_new', methods:['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em)
     {
@@ -96,7 +97,11 @@ final class AttendanceController extends AbstractController
     EntityManagerInterface $em
     )
     {
-    
+    $players = $playerRepo->findAll();
+    $statuses = $statusRepo->findAll();
+
+    $presentStatus = $statusRepo->findOneBy(['name' => 'Présent']);
+    $defaultStatusId = $presentStatus ? $presentStatus->getId() : null;
     $event = ($type === 'training') ? $trainingRepo->find($id) : $gameRepo->find($id);
 
     if (!$event) {
@@ -151,7 +156,7 @@ final class AttendanceController extends AbstractController
         $em->flush();
         $this->addFlash('success', 'La feuille de présence a été mise à jour.');
         
-        return $this->redirectToRoute($type . '_show', ['id' => $id]);
+        return $this->redirectToRoute($type . '_index');
     }
 
     return $this->render('attendance/take.html.twig', [
@@ -159,7 +164,9 @@ final class AttendanceController extends AbstractController
         'type' => $type,
         'players' => $players,
         'statuses' => $statuses,
-        'existingAttendances' => $indexedAttendances 
+        'existingAttendances' => $indexedAttendances,
+        'defaultStatusId' => $defaultStatusId
     ]);
 }
+
 }

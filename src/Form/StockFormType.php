@@ -20,6 +20,14 @@ class StockFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+
+              ->add('equipment', EntityType::class, [
+                'class' => Equipment::class,
+                'choice_label' => 'name',
+                'label' => 'Equipement',
+                'placeholder' => 'Choisir un équipement',   
+            ])
+
             ->add('quantity' , IntegerType::class, [
                 'label' => "Quantité",
                 'required' => true,
@@ -52,12 +60,7 @@ class StockFormType extends AbstractType
                 'placeholder' => "tous les compélments d'information ",
             ],
             ])
-            ->add('equipment', EntityType::class, [
-                'class' => Equipment::class,
-                'choice_label' => 'name',
-                'label' => 'Equipement',
-                'placeholder' => 'Choisir un équipement',   
-            ])
+          
             ->add('coach', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => function (User $user) {

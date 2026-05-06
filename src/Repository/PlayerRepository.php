@@ -15,7 +15,14 @@ class PlayerRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Player::class);
     }
-
+    
+    public function countAllPlayers(): int
+    {
+    return (int) $this->createQueryBuilder('p')
+        ->select('count(p.id)')
+        ->getQuery()
+        ->getSingleScalarResult();
+    }
     //    /**
     //     * @return Player[] Returns an array of Player objects
     //     */

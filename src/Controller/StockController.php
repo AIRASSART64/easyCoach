@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Equipment;
 use App\Entity\Stock;
 use App\Form\StockFormType;
 use App\Repository\StockRepository;
@@ -22,11 +23,14 @@ final class StockController extends AbstractController
             'stocks' => $stocks
         ]);
     }
-     #[Route('/new', name:'stock_new', methods:['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em)
+     #[Route('/new/{id}', name:'stock_new', methods:['GET', 'POST'], defaults: ['id' => null])]
+    public function new(Request $request, EntityManagerInterface $em , Equipment $equipment = null)
     {
         $newStock = new Stock();
-
+        $newStock->setDate(new \DateTimeImmutable());
+        if($equipment) {
+            $newStock->setEquipment($equipment);
+        }
         $formStock = $this-> createForm(StockFormType::class, $newStock);
         $formStock->handleRequest($request);
 
@@ -34,9 +38,9 @@ final class StockController extends AbstractController
             $em-> persist($newStock);
             $em-> flush();
             
-            return $this->redirectToRoute('stock_index');
+            return $this->redirectToRoute('equipment_index');
         }
-        return $this->render('stock/new.html.twig', ['formStock'=>$formStock]);
+        return $this->render('stock/new.html.twig', ['formStock'=>$formStock , 'equipment'=>$equipment]);
     }
       #[Route('/show/{id}', name:'stock_show', methods:['GET'])]
     public function show(Stock $stock)

@@ -15,7 +15,15 @@ class StockRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Stock::class);
     }
-
+    public function getTotalStockPerEquipment(): array
+    {
+    return $this->createQueryBuilder('s')
+        ->select('e.name as equipmentName', 'e.id as equipmentId', 'SUM(s.quantity) as totalQty')
+        ->join('s.equipment', 'e')
+        ->groupBy('e.id')
+        ->getQuery()
+        ->getResult();
+    }
     //    /**
     //     * @return Stock[] Returns an array of Stock objects
     //     */

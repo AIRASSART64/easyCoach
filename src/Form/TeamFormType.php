@@ -38,7 +38,10 @@ class TeamFormType extends AbstractType
             ])
             ->add('coach', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'name',
+                  'choice_label' => function (User $user) {
+                return $user->getFirstName() . ' ' . $user->getName();
+                },
+                'label' => 'Coach référent'
             ])
             // ->add('player', EntityType::class, [
             //     'class' => Player::class,

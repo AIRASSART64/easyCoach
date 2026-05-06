@@ -15,6 +15,16 @@ class TrainingRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Training::class);
     }
+    public function findNextTraining(\DateTimeInterface $now): ?Training
+    {
+    return $this->createQueryBuilder('t')
+        ->where('t.date >= :now')
+        ->setParameter('now', $now)
+        ->orderBy('t.date', 'ASC')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 
     //    /**
     //     * @return Training[] Returns an array of Training objects
