@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des présences{% endblock %}
+
+{% block body %}
+<div class="max-w-5xl mx-auto px-4 mt-6 pb-20">
+
+    <div class="mb-8">
+        <span class="text-xs font-black uppercase tracking-widest text-indigo-600">Feuille de présence</span>
+        <h2 class="text-4xl font-black uppercase tracking-tighter text-slate-900 mt-1">
+            {{ type == 'training' ? 'Entraînement' : 'Match' }} - {{ event.date|date('d/m/Y') }}
+        </h2>
+    </div>
+
+    <form method="POST" id="attendance-form">
+        <div class="bg-white border-4 border-slate-900 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="hidden md:table-header-group">
+                        <tr class="bg-slate-900 text-white uppercase text-[10px] tracking-widest">
+                            <th class="p-4 w-1/4">Joueur</th>
+                            <th class="p-4 w-1/4 text-center">Statut / Motif</th>
+                            <th class="p-4 w-1/3">Observations</th>
+                        </tr>
+                        
+                    </thead>
+                    <tbody class="divide-y-2 divide-slate-900 md:table-row-group">
+                        {% for player in players %}
+                        {% set currentData = existingAttendances[player.id] ?? null %}
+
+                        <tr class="block md:table-row p-4 md:p-0 border-b-2 md:border-none">
+
+                            <td class="block md:table-cell p-1 mb-3 md:mb-0">
+                                <span class="block font-black text-slate-900 uppercase text-sm">
+                                    {{ player.name }}
+                                </span>
+                                <span class="text-[10px] text-slate-500 font-bold">
+                                    {{ player.firstName }}
+                                </span>
+                            </td>
+
+                            <td class="block md:table-cell mb-3 md:mb-0">
+                                <label class="block text-[10px] font-black uppercase text-slate-500 mb-1 md:hidden">
+                                    Statut
+                                </label>
+
+                                <select name="status[{{ player.id }}]"
+                                    class="status-select w-full min-w-[160px] bg-white border-2 border-slate-900 p-3 text-sm font-black uppercase focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+
+                                    {% for status in statuses %}
+                                    <option value="{{ status.id }}" {% if currentData and
+                                        currentData.statusId==status.id %}selected{% endif %}
+                                        data-name="{{ status.name|lower }}">
+                                        {{ status.name|upper }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+
+                       
+                            <td class="block md:table-cell">
+                                <label class="block text-[10px] font-black uppercase text-slate-500 mb-1 md:hidden">
+                                    Observations
+                                </label>
+
+                                <input type="text" name="observation[{{ player.id }}]"
+                                    value="{{ currentData ? currentData.observation : '' }}"
+                                    placeholder="Blessure, retard..."
+                                    class="w-full bg-slate-100 border-none text-sm font-bold p-3 focus:ring-2 focus:ring-slate-900 outline-none">
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="mt-8 flex flex-col md:flex-row gap-4">
+            <button type="submit"
+                class="flex-[2] bg-slate-900 text-white font-black uppercase py-4 hover:bg-indigo-600 transition-all tracking-widest text-lg">
+                Enregistrer la liste
+            </button>
+            <a href="{{ path(type ~ '_index') }}"
+                class="flex-1 flex items-center justify-center border-4 border-slate-900 font-black uppercase text-sm hover:bg-slate-100 transition-all">
+                Annuler
+            </a>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('attendance-form');
+        const selects = document.querySelectorAll('.status-select');
+
+        const isEmpty = form.getAttribute('data-is-empty') === 'true';
+
+        if (isEmpty) {
+            selects.forEach(select => {
+                for (let i = 0; i < select.options.length; i++) {
+
+                    const text = select.options[i].getAttribute('data-name');
+                    if (text === 'présent' || text === 'convoqué') {
+                        select.selectedIndex = i;
+                        break;
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.7rem center;
+        background-size: 1em;
+    }
+</style>
+{% endblock %}

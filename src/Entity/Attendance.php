@@ -7,6 +7,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AttendanceRepository::class)]
+#[ORM\UniqueConstraint(name: 'unique_attendance_training', columns: ['player_id', 'training_id'])]
+#[ORM\UniqueConstraint(name: 'unique_attendance_game', columns: ['player_id', 'game_id'])]
+
 class Attendance
 {
     #[ORM\Id]
@@ -14,7 +17,7 @@ class Attendance
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $start_date = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
@@ -51,7 +54,7 @@ class Attendance
         return $this->start_date;
     }
 
-    public function setStartDate(\DateTimeImmutable $start_date): static
+    public function setStartDate(?\DateTimeImmutable $start_date): static
     {
         $this->start_date = $start_date;
 

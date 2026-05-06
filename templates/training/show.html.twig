@@ -1,68 +1,77 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails de l'entraînement {% endblock %}
+{% block title %}Détails de l'entraînement{% endblock %}
 
 {% block body %}
-<div class="max-w-xl mx-auto px-4 mt-6 pb-20">
- 
-    <div class="mb-8">
-        <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
-             {% if training.date|date('d/m/y') %}
-               Date de l'entraînement {{ training.date|date('d/m/y') }}
-                {% else %}
-                À programmer
-                {% endif %}
-        </h2>
-
-    </div>
-
-    <div class="space-y-6">
+<div class="max-w-md mx-auto px-4 mt-6 pb-20">
     
-        <div class="bg-white border-2 border-slate-900 p-6">
-            <h3 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Informations sur l'entraînement</h3>
-            
-            <div class="space-y-4">
-                {% if training.theme.name %}
-                <div class="flex justify-between items-center pt-2 border-t border-slate-100">
-                    <div>
-                        <span class="block text-xs font-bold uppercase text-slate-500">Théme de l'entraînement : <span class="text-lg font-bold">{{training.theme.value }}</span></span>
-    
-                    </div>
-                </div>
-                {% endif %}
-               
-                {% if training.startTime|date("H:i") %}
-                <div class="flex justify-between items-center pt-2 border-t border-slate-100">
-                    <div>
-                        <span class="block text-xs font-bold uppercase text-slate-500">Heure de début : <span class="text-lg font-bold">{{training.startTime|date('H:i')  }}</span></span>
-    
-                    </div>
-                </div>
-                {% endif %}
+   
+    <a href="{{ path('training_index') }}" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 mb-6 block">
+        ← Retour aux entraînements
+    </a>
 
-                {% if training.endTime|date("H:i") %}
-                <div class="pt-2 border-t border-slate-100">
-                    <span class="block text-xs font-bold uppercase text-slate-500">Heure de fin : <span class="text-lg font-bold break-all">{{ training.endTime|date('H:i') }}</span> </span>
-                    
-                </div>
-                {% endif %}
-                {% if training.coachObservation %}
-                <div class="pt-2 border-t border-slate-100">
-                    <span class="block text-xs font-bold uppercase text-slate-500">Commentaires</span>
-                    <p class="text-xs font-bold break-all">{{ training.coachObservation }}</p>
-                </div>
-                {% endif %}
-
-            </div>
+    <div class="bg-white border-4 border-slate-900 p-6 ">
+        
+      
+        <div class="mb-6">
+            <span class="inline-block bg-indigo-600 text-white text-xs font-black px-3 py-1 uppercase mb-2">
+                {{ training.date ? training.date|date('d/m/Y') : 'Date non définie' }}
+            </span>
+            <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-tight">
+                {{ training.theme.value }}
+            </h2>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mt-8">
-            <a href="{{ path('training_update', {'id': training.id}) }}" class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-slate-50 transition-all">
+        <div class="space-y-3 mb-8">
+            <div class="flex items-center gap-3">
+                <span class="w-6 h-6 flex items-center justify-center bg-slate-100 rounded-full text-xs">🕒</span>
+                <p class="text-sm font-bold text-slate-700">
+                    {{ training.startTime ? training.startTime|date('H:i') : '--:--' }} - {{ training.endTime ? training.endTime|date('H:i') : '--:--' }}
+                </p>
+            </div>
+            {% if training.coachObservation %}
+                <div class="bg-slate-50 p-3 border-l-4 border-slate-300">
+                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">Notes du coach :</p>
+                    <p class="text-sm text-slate-700 italic">"{{ training.coachObservation }}"</p>
+                </div>
+            {% endif %}
+        </div>
+
+       
+        <div class="border-t-2 border-slate-900 pt-6 mb-6">
+            <h3 class="text-xs font-black uppercase tracking-widest text-slate-900 mb-4">Présences</h3>
+            
+            <a href="{{ path('attendance_take_mass', {'type': 'training', 'id': training.id}) }}" 
+               class="block w-full text-center bg-indigo-600 text-white py-4 font-black uppercase tracking-widest text-sm hover:bg-slate-900 transition-all">
+               {% if training.attendances|length > 0 %}
+                     Modifier l'appel ({{ training.attendances|length }} joueurs)
+               {% else %}
+                     Faire l'appel de l'effectif
+               {% endif %}
+            </a>
+
+            {% if training.attendances|length > 0 %}
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                    <div class="bg-emerald-50 p-2 text-center border border-emerald-200">
+                        <span class="block text-emerald-700 font-black text-xl">{{ training.attendances|filter(a => a.status.name|lower == 'présent')|length }}</span>
+                        <span class="text-[9px] font-bold uppercase text-emerald-600">Présents</span>
+                    </div>
+                    <div class="bg-red-50 p-2 text-center border border-red-200">
+                        <span class="block text-red-700 font-black text-xl">{{ training.attendances|filter(a => a.status.name|lower == 'absent')|length }}</span>
+                        <span class="text-[9px] font-bold uppercase text-red-600">Absents</span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="flex gap-4 border-t-2 border-slate-900 pt-6">
+            <a href="{{ path('training_update', {'id': training.id}) }}" 
+               class="flex-1 text-center py-2 border-2 border-slate-900 text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white transition-all">
                 Modifier
             </a>
-            <a href="{{ path('training_index') }}" class="bg-slate-900 text-white text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 transition-all">
-                Retour
-            </a>
+            <div class="flex-1 ">
+                {% include "training/_delete_form.html.twig" %}
+            </div>
         </div>
     </div>
 </div>
