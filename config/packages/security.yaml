@@ -23,7 +23,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                # target: app_any_route
+                target: app_login
 
             remember_me:
                 secret: '%kernel.secret%'
@@ -39,8 +39,15 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+       # Autorise l'accès à la route home pour tout le monde
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        
+        # Autorise les pages de login et d'inscription
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+
+        # Verrouille tout le reste aux utilisateurs connectés
+        - { path: ^/, roles: ROLE_USER }
 
 when@test:
     security:

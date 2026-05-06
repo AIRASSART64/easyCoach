@@ -17,10 +17,13 @@ final class PlayerController extends AbstractController
     #[Route('/', name: 'player_index', methods:['GET'])]
     public function index(PlayerRepository $playerRepository): Response
     {
-        $allPlayers = $playerRepository->findAll();
+     
+    $players = $playerRepository->findBy([
+        'coach' => $this->getUser()
+    ]);
 
         return $this->render('player/index.html.twig', [
-            'players' => $allPlayers,
+            'players' => $players,
         ]);
     }
     #[Route('/new', name:'player_new', methods:['GET', 'POST'])]
@@ -32,6 +35,7 @@ final class PlayerController extends AbstractController
         $formPlayer->handleRequest($request);
 
         if($formPlayer->isSubmitted() && $formPlayer->isValid()) {
+            $newPlayer->setCoach($this->getUser());
             $em-> persist($newPlayer);
             $em-> flush();
             
@@ -43,6 +47,9 @@ final class PlayerController extends AbstractController
     #[Route('/show/{id}', name:'player_show', methods:['GET'])]
     public function show(Player $player)
     {
+    if ($player->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Ce joueur ne fait pas partie de votre effectif.");
+    }
      return $this->render('player/show.html.twig', ['player'=>$player]);
 
     }
