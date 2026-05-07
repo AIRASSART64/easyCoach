@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Attendance;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,47 +17,51 @@ class AttendanceRepository extends ServiceEntityRepository
         parent::__construct($registry, Attendance::class);
     }
 
-   public function countInjuredPlayers(): int
+    public function countInjuredPlayers(User $user): int
 {
-    $lastMonth = new \DateTime('-1 month');
-    
-    $qb = $this->createQueryBuilder('a')
+   
+    return (int) $this->createQueryBuilder('a')
         ->select('count(DISTINCT p.id)')
         ->join('a.player', 'p')
         ->join('a.status', 's')
-        ->leftJoin('a.training', 't') 
-        ->where('s.name LIKE :status')
-        ->andWhere('t.date >= :date') 
-        ->setParameter('status', '%Blessé%')
-        ->setParameter('date', $lastMonth);
-
-    return (int) $qb->getQuery()->getSingleScalarResult();
+        ->andWhere('p.coach = :coach')
+        ->andWhere('s.name = :statusName')
+        ->setParameter('coach', $user)
+        ->setParameter('statusName', 'Blessé')
+        ->getQuery()
+        ->getSingleScalarResult();
 }
 
-    public function getGlobalAttendanceRate(): int
-    {
+    public function getGlobalAttendanceRate(User $user): float
+{
     $qb = $this->createQueryBuilder('a')
-        ->select('s.name, count(a.id) as total')
+        ->join('a.player', 'p')
         ->join('a.status', 's')
-        ->groupBy('s.name')
+        ->andWhere('p.coach = :coach')
+        ->setParameter('coach', $user);
+
+    $allAttendances = (clone $qb)->select('count(a.id)')->getQuery()->getSingleScalarResult();
+    
+    if ($allAttendances == 0) return 0.0;
+
+    $presents = $qb->select('count(a.id)')
+        ->andWhere('s.name = :status')
+        ->setParameter('status', 'Présent')
+        ->getQuery()
+        ->getSingleScalarResult();
+
+    return round(($presents / $allAttendances) * 100, 1);
+}
+    public function findAllByCoach(User $user): array
+{
+    return $this->createQueryBuilder('a')
+        ->join('a.player', 'p') 
+        ->andWhere('p.coach = :coach') 
+        ->setParameter('coach', $user)
+        ->orderBy('a.startDate', 'DESC') 
         ->getQuery()
         ->getResult();
-
-    $present = 0;
-    $total = 0;
-
-    foreach ($qb as $row) {
-        $total += $row['total'];
-        if (strtolower($row['name']) === 'présent') {
-            $present = $row['total'];
-        }
-    }
-
-    if ($total === 0) return 0;
-
-    return round(($present / $total) * 100);
-    }
-    
+}
 
 
 

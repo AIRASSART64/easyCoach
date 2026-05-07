@@ -3,9 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Training;
-use App\Entity\User;
 use App\Enum\TrainingTheme;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -48,15 +46,15 @@ class TrainingFormType extends AbstractType
                 'rows' => 10, 
                 'placeholder' => 'Ex: Bonne intensité en 1ère mi-temps, manque de réalisme devant le but...',
             ],
-            ])
-            ->add('coach', EntityType::class, [
-                'class' => User::class,
-                 'choice_label' => function (User $user) {
-                return $user->getFirstName() . ' ' . $user->getName();
-                },
-                'label' => 'Coach référent'
-            ])
-        ;
+            ]);
+        //     ->add('coach', EntityType::class, [
+        //         'class' => User::class,
+        //          'choice_label' => function (User $user) {
+        //         return $user->getFirstName() . ' ' . $user->getName();
+        //         },
+        //         'label' => 'Coach référent'
+        //     ])
+        // ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

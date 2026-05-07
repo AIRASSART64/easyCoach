@@ -22,7 +22,7 @@ final class AttendanceController extends AbstractController
    #[Route('/', name: 'attendance_index', methods:['GET'])]
     public function index(AttendanceRepository $attendanceRepository): Response
     {
-        $allAttendances = $attendanceRepository->findAll();
+        $allAttendances = $attendanceRepository->findAllByCoach($this->getUser());
         return $this->render('attendance/index.html.twig', [
             'attendances' => $allAttendances
         ]);
@@ -30,9 +30,11 @@ final class AttendanceController extends AbstractController
     
     #[Route('/new', name: 'attendance_new', methods:['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em)
-    {
+    {   
         $newAttendance = new Attendance();
-        $formAttendance = $this->createForm(AttendanceFormType::class , $newAttendance);
+        $formAttendance = $this->createForm(AttendanceFormType::class , $newAttendance, [
+    'coach' => $this->getUser(),
+]);
         $formAttendance->handleRequest($request);
 
         if($formAttendance->isSubmitted() && $formAttendance->isValid()) {
@@ -56,8 +58,12 @@ final class AttendanceController extends AbstractController
       #[Route('/update/{id}', name: 'attendance_update', methods:['GET', 'POST'])]
     public function update(Attendance $attendance, Request $request, EntityManagerInterface $em)
     {
-      
-        $formAttendance = $this->createForm(AttendanceFormType::class , $attendance);
+        if ($attendance->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException();
+    }
+        $formAttendance = $this->createForm(AttendanceFormType::class , $attendance, [
+        'coach' => $this->getUser(),
+    ]);
         $formAttendance->handleRequest($request);
 
         if($formAttendance->isSubmitted() && $formAttendance->isValid()) {
@@ -75,7 +81,9 @@ final class AttendanceController extends AbstractController
       #[Route('/delete/{id}', name: 'attendance_delete', methods:['POST'])]
     public function delete(Attendance $attendance, Request $request, EntityManagerInterface $em)
     {
-    
+        if ($attendance->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException();
+         }
         if($this->isCsrfTokenValid('delete' . $attendance->getId(), $request->request->get('_token'))){
         $em->remove($attendance);
         $em->flush();
@@ -102,24 +110,23 @@ final class AttendanceController extends AbstractController
         throw $this->createNotFoundException("L'événement n'existe pas.");
     }
 
-    // 2. Récupération des joueurs
-    $players = $playerRepo->findAll();
+    $players = $playerRepo->findBy(['coach' => $this->getUser()]);
 
-    // 3. Logique pour les Statuts : On force "Présent" en première position
+  
     $allStatuses = $statusRepo->findAll();
     $orderedStatuses = [];
     $defaultStatusId = null;
 
     foreach ($allStatuses as $s) {
         if ($s->getName() === 'Présent') {
-            array_unshift($orderedStatuses, $s); // On le met tout en haut de la liste
+            array_unshift($orderedStatuses, $s); 
             $defaultStatusId = $s->getId();
         } else {
-            $orderedStatuses[] = $s; // On ajoute les autres à la suite
+            $orderedStatuses[] = $s; 
         }
     }
 
-    // 4. Indexation des présences existantes pour pré-remplir le formulaire
+    
     $existingAttendances = $attRepo->findBy([$type => $event]);
     $indexedAttendances = [];
 
@@ -130,9 +137,9 @@ final class AttendanceController extends AbstractController
         ];
     }
 
-    // 5. Traitement du formulaire lors de la soumission (POST)
+
     if ($request->isMethod('POST')) {
-        $attendanceData = $request->request->all('status'); // On utilise request->all() plutôt que getPayload() pour la compatibilité
+        $attendanceData = $request->request->all('status'); 
         $observations = $request->request->all('observation');
 
         foreach ($players as $player) {
@@ -142,7 +149,6 @@ final class AttendanceController extends AbstractController
                 $criteria = ['player' => $player];
                 $criteria[$type] = $event; 
 
-                // On cherche l'existant ou on crée une nouvelle entité
                 $attendance = $attRepo->findOneBy($criteria) ?? new Attendance();
 
                 $attendance->setPlayer($player);
@@ -153,7 +159,7 @@ final class AttendanceController extends AbstractController
                     $attendance->setGame($event);
                 }
 
-                // On récupère une référence au statut pour ne pas refaire une requête SQL inutile
+                
                 $attendance->setStatus($em->getReference(Status::class, $statusId));
                 $attendance->setCoach($this->getUser());
                 $attendance->setCoachObservation($observations[$player->getId()] ?? null);
@@ -168,14 +174,14 @@ final class AttendanceController extends AbstractController
         return $this->redirectToRoute($type . '_index');
     }
 
-    // 6. Rendu du template
+
     return $this->render('attendance/take.html.twig', [
         'event' => $event,
         'type' => $type,
         'players' => $players,
-        'statuses' => $orderedStatuses, // Liste triée avec "Présent" en premier
+        'statuses' => $orderedStatuses, 
         'existingAttendances' => $indexedAttendances,
-        'defaultStatusId' => $defaultStatusId // Utile pour la logique Twig
+        'defaultStatusId' => $defaultStatusId 
     ]);
 }
 

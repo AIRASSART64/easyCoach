@@ -16,9 +16,11 @@ final class TeamCategoryController extends AbstractController
 {
     #[Route('/', name: 'team_category_index', methods: ['GET'])]
     public function index(TeamCategoryRepository $teamCategoryRepository): Response
-    {
+    {   
         return $this->render('team_category/index.html.twig', [
-            'team_categories' => $teamCategoryRepository->findAll(),
+            'team_categories' => $teamCategoryRepository->findBy([
+        'coach' => $this->getUser()
+    ]),
         ]);
     }
 
@@ -33,7 +35,7 @@ final class TeamCategoryController extends AbstractController
             $entityManager->persist($teamCategory);
             $entityManager->flush();
 
-            return $this->redirectToRoute('team_category_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('team_category/new.html.twig', [
@@ -42,9 +44,10 @@ final class TeamCategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'team_category_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'team_category_show', methods: ['GET'])]
     public function show(TeamCategory $teamCategory): Response
     {
+       
         return $this->render('team_category/show.html.twig', [
             'team_category' => $teamCategory,
         ]);

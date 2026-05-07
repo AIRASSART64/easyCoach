@@ -18,14 +18,17 @@ final class TeamController extends AbstractController
     #[Route('/', name: 'team_index', methods:['GET'])]
     public function index(TeamRepository $teamRepo): Response
     {
-        $teams= $teamRepo->findAll();
+        $teams= $teamRepo->findBy( [
+           'coach' => $this->getUser()
+        ]);
         
         return $this->render('team/index.html.twig', ['teams'=> $teams]);
     }
     #[Route('/new', name:'team_new', methods:['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em)
-    {
+    {   
         $newTeam = new Team();
+        $newTeam->setCoach($this->getUser());
 
         $formTeam = $this-> createForm(TeamFormType::class, $newTeam);
         $formTeam->handleRequest($request);
@@ -42,6 +45,9 @@ final class TeamController extends AbstractController
     #[Route('/show/{id}', name:'team_show', methods:['GET'])]
     public function show(Team $team)
     {
+    if ($team->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
+    }
      return $this->render('team/show.html.twig', ['team'=>$team]);
 
     }
@@ -49,6 +55,9 @@ final class TeamController extends AbstractController
     #[Route('/update/{id}', name:'team_update', methods:['GET', 'POST'])]
     public function update(Team $team, Request $request, EntityManagerInterface $em ) 
     {
+        if ($team->getCoach() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
         $formTeam = $this-> createForm(TeamFormType::class, $team);
         $formTeam->handleRequest($request);
 
@@ -64,6 +73,9 @@ final class TeamController extends AbstractController
     #[Route('/delete/{id}', name:'team_delete', methods:['POST'])]
     public function delete(Team $team, Request $request, EntityManagerInterface $em) 
     {
+    if ($team->getCoach() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
       if($this->isCsrfTokenValid('delete' . $team->getId(), $request->request->get('_token'))) {
         $em->remove($team);
         $em->flush();
@@ -74,7 +86,13 @@ final class TeamController extends AbstractController
     #[Route('/{id}/player', name:'team_player', methods:['GET', 'POST'])]
     public function addPlayer(Team $team, Request $request, EntityManagerInterface $em)
     {
-        $form = $this->createForm(TeamPlayerFormType::class , $team);
+        if ($team->getCoach() !== $this->getUser()) {
+            throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
+        }
+
+        $form = $this->createForm(TeamPlayerFormType::class , $team, [
+        'coach' => $this->getUser(), 
+        ]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){

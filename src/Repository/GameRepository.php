@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Game;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,24 +17,28 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
-    public function findNextGame(\DateTimeInterface $now): ?Game
-    {
+    public function findNextGame(\DateTime $now, User $user)
+{
     return $this->createQueryBuilder('g')
-        ->where('g.date >= :now')
+        ->andWhere('g.coach = :coach')
+        ->andWhere('g.date >= :now')
+        ->setParameter('coach', $user)
         ->setParameter('now', $now)
         ->orderBy('g.date', 'ASC')
         ->setMaxResults(1)
         ->getQuery()
         ->getOneOrNullResult();
-    }
+}
     
-    public function countAllGames(): int
-    {
+    public function countAllGames(User $user): int
+{
     return (int) $this->createQueryBuilder('g')
         ->select('count(g.id)')
+        ->andWhere('g.coach = :coach')
+        ->setParameter('coach', $user)
         ->getQuery()
         ->getSingleScalarResult();
-    }
+}
     //    /**
     //     * @return Game[] Returns an array of Game objects
     //     */

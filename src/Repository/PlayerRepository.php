@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Player;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,10 +17,12 @@ class PlayerRepository extends ServiceEntityRepository
         parent::__construct($registry, Player::class);
     }
     
-    public function countAllPlayers(): int
-    {
+    public function countAllPlayers(User $user): int
+   {
     return (int) $this->createQueryBuilder('p')
         ->select('count(p.id)')
+        ->andWhere('p.coach = :coach') 
+        ->setParameter('coach', $user) 
         ->getQuery()
         ->getSingleScalarResult();
     }

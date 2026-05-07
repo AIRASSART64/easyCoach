@@ -3,9 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Player;
-use App\Entity\User;
 use App\Enum\PlayerPosition;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -75,15 +73,14 @@ class PlayerFormType extends AbstractType
             ->add('responsable_email', EmailType::class, [
                 'label' => 'Email du responsable légal',
                 'attr' => ['placeholder' => 'exemple@domaine.fr']
-            ])
-            ->add('coach', EntityType::class, [
-                'class' => User::class,
-                  'choice_label' => function (User $user) {
-                return $user->getFirstName() . ' ' . $user->getName();
-                },
-                'label' => 'Coach référent'
-            ])
-        ;
+            ]);
+            // ->add('coach', EntityType::class, [
+            //     'class' => User::class,
+            //       'choice_label' => function (User $user) {
+            //     return $user->getFirstName() . ' ' . $user->getName();
+            //     },
+            //     'label' => 'Coach référent'
+            // ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

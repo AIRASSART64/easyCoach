@@ -19,7 +19,7 @@
 
     <div class="space-y-4">
         {% for game in games %}
-        <div class="bg-white border-4 border-slate-900 p-4 transition-transform relative shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+        <div class="bg-white border-4 border-slate-900 p-4 transition-transform relative ">
             
         
             <a href="{{ path('game_show', {'id': game.id}) }}" class="absolute inset-0 z-0"></a>
@@ -52,7 +52,7 @@
                 <div class="relative z-20 mt-4">
                     <a href="{{ path('attendance_take_mass', {'type': 'game', 'id': game.id}) }}" 
                        class="block text-center bg-slate-900 text-white py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-indigo-600 transition-colors border-2 border-slate-900">
-                        Gérer les convocations
+                        Gérer les absences
                     </a>
                 </div>
 

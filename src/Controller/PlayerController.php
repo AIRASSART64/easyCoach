@@ -48,7 +48,7 @@ final class PlayerController extends AbstractController
     public function show(Player $player)
     {
     if ($player->getCoach() !== $this->getUser()) {
-        throw $this->createAccessDeniedException("Ce joueur ne fait pas partie de votre effectif.");
+        throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
     }
      return $this->render('player/show.html.twig', ['player'=>$player]);
 
@@ -57,6 +57,9 @@ final class PlayerController extends AbstractController
     #[Route('/update/{id}', name:'player_update', methods:['GET', 'POST'])]
     public function update(Player $player, Request $request, EntityManagerInterface $em ) 
     {
+         if ($player->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
+    }
         $formPlayer = $this-> createForm(PlayerFormType::class, $player);
         $formPlayer->handleRequest($request);
 
@@ -72,6 +75,9 @@ final class PlayerController extends AbstractController
     #[Route('/delete/{id}', name:'player_delete', methods:['POST'])]
     public function delete(Player $player, Request $request, EntityManagerInterface $em) 
     {
+     if ($player->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
+    }
       if($this->isCsrfTokenValid('delete' . $player->getId(), $request->request->get('_token'))) {
         $em->remove($player);
         $em->flush();

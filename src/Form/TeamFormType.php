@@ -5,7 +5,6 @@ namespace App\Form;
 
 use App\Entity\Team;
 use App\Entity\TeamCategory;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -35,14 +34,14 @@ class TeamFormType extends AbstractType
                 'class' => TeamCategory::class,
                 'choice_label' => 'name',
                 'label'=>'Catégorie'
-            ])
-            ->add('coach', EntityType::class, [
-                'class' => User::class,
-                  'choice_label' => function (User $user) {
-                return $user->getFirstName() . ' ' . $user->getName();
-                },
-                'label' => 'Coach référent'
-            ])
+            ]);
+            // ->add('coach', EntityType::class, [
+            //     'class' => User::class,
+            //       'choice_label' => function (User $user) {
+            //     return $user->getFirstName() . ' ' . $user->getName();
+            //     },
+            //     'label' => 'Coach référent'
+            // ])
             // ->add('player', EntityType::class, [
             //     'class' => Player::class,
             //     'choice_label' => function(Player $player) {

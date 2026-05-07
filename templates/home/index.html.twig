@@ -67,8 +67,9 @@
                 <h3 class="text-2xl font-black uppercase leading-tight mb-2">
                     {{ nextTraining.theme.value }}
                 </h3>
+        
                 <p class="text-slate-500 text-[10px] font-bold uppercase mb-6">
-                    🕒 {{ nextTraining.startTime|date('H:i') }} - {{ nextTraining.endTime|date('H:i') }}
+                    🕒 {{ nextTraining.startTime|date('H:i') }} -  {{ nextTraining.endTime|date('H:i') }}
                 </p>
                 <a href="{{ path('attendance_take_mass', {'type': 'training', 'id': nextTraining.id}) }}" 
                    class="block text-center bg-indigo-600 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-slate-900 transition-all active:translate-x-1 active:translate-y-1">
@@ -99,7 +100,7 @@
                 </p>
                 <a href="{{ path('attendance_take_mass', {'type': 'game', 'id': nextGame.id}) }}" 
                    class="block text-center bg-slate-900 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-indigo-600 transition-all active:translate-x-1 active:translate-y-1">
-                   Gérer la présence
+                   Gérer les présences
                 </a>
             {% else %}
                 <div class="py-6 text-center border-2 border-dashed border-slate-200">

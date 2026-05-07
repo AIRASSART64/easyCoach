@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Equipment;
 use App\Entity\Stock;
-use App\Entity\User;
 use App\Enum\TypeStockManagment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -59,17 +58,17 @@ class StockFormType extends AbstractType
                 'rows' => 10, 
                 'placeholder' => "tous les compélments d'information ",
             ],
-            ])
+            ]);
           
-            ->add('coach', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => function (User $user) {
-                return $user->getFirstName() . ' ' . $user->getName();
-                },
-                'label' => 'Coach référent',
+        //     ->add('coach', EntityType::class, [
+        //         'class' => User::class,
+        //         'choice_label' => function (User $user) {
+        //         return $user->getFirstName() . ' ' . $user->getName();
+        //         },
+        //         'label' => 'Coach référent',
             
-            ])
-        ;
+        //     ])
+        // ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

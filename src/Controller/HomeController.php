@@ -17,14 +17,19 @@ final class HomeController extends AbstractController
     public function index(TrainingRepository $trainingRepo, GameRepository $gameRepo, PlayerRepository $playerRepo, AttendanceRepository $attendanceRepo): Response
 {
     $now = new \DateTime();
+    $user = $this->getUser();
+
+    if (!$user) {
+        return $this->render('home/index.html.twig');
+    }
 
     return $this->render('home/index.html.twig', [
-        'nextTraining' => $trainingRepo->findNextTraining($now),
-        'nextGame'     => $gameRepo->findNextGame($now),
-        'countPlayers'   => $playerRepo->countAllPlayers(),
-        'attendanceRate' => $attendanceRepo->getGlobalAttendanceRate(),
-        'injuredCount'   => $attendanceRepo->countInjuredPlayers(),
-        'countGames'     => $gameRepo->countAllGames(),
+        'nextTraining' => $trainingRepo->findNextTraining($now, $user),
+        'nextGame'     => $gameRepo->findNextGame($now, $user),
+        'countPlayers'   => $playerRepo->countAllPlayers($user),
+        'attendanceRate' => $attendanceRepo->getGlobalAttendanceRate($user),
+        'injuredCount'   => $attendanceRepo->countInjuredPlayers($user),
+        'countGames'     => $gameRepo->countAllGames($user),
     ]);
 }
 }

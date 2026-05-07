@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Game;
 use App\Entity\Team;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -82,15 +81,15 @@ class GameFormType extends AbstractType
             ->add('team', EntityType::class, [
                 'class' => Team::class,
                 'choice_label' => 'name',
-            ])
-            ->add('coach', EntityType::class, [
-                'class' => User::class,
-                  'choice_label' => function (User $user) {
-                return $user->getFirstName() . ' ' . $user->getName();
-                },
-                'label' => 'Coach référent'
-            ])
-        ;
+            ]);
+        //     ->add('coach', EntityType::class, [
+        //         'class' => User::class,
+        //           'choice_label' => function (User $user) {
+        //         return $user->getFirstName() . ' ' . $user->getName();
+        //         },
+        //         'label' => 'Coach référent'
+        //     ])
+        // ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
