@@ -31,7 +31,9 @@ final class EquipmentController extends AbstractController
         $newEquipment = new Equipment();
         $newEquipment->setCoach($this->getUser());
 
-        $formEquipment = $this-> createForm(EquipmentFormType::class, $newEquipment);
+        $formEquipment = $this-> createForm(EquipmentFormType::class, $newEquipment, [
+            'coach'=>$this->getUser()
+        ]);
         $formEquipment->handleRequest($request);
 
         if($formEquipment->isSubmitted() && $formEquipment->isValid()) {
@@ -56,7 +58,9 @@ final class EquipmentController extends AbstractController
          if ($equipment->getCoach() !== $this->getUser()) {
         throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
     }
-        $formEquipment = $this-> createForm(EquipmentFormType::class, $equipment);
+        $formEquipment = $this-> createForm(EquipmentFormType::class, $equipment, [
+            'coach'=>$this->getUser()
+        ]);
         $formEquipment->handleRequest($request);
 
         if($formEquipment->isSubmitted() && $formEquipment->isValid()) {

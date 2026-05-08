@@ -28,12 +28,14 @@ final class TeamController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em)
     {   
         $newTeam = new Team();
-        $newTeam->setCoach($this->getUser());
 
-        $formTeam = $this-> createForm(TeamFormType::class, $newTeam);
+        $formTeam = $this-> createForm(TeamFormType::class, $newTeam, [
+        'coach' => $this->getUser() 
+    ]);
         $formTeam->handleRequest($request);
 
         if($formTeam->isSubmitted() && $formTeam->isValid()) {
+            $newTeam->setCoach($this->getUser());
             $em-> persist($newTeam);
             $em-> flush();
             
@@ -58,7 +60,9 @@ final class TeamController extends AbstractController
         if ($team->getCoach() !== $this->getUser()) {
             throw $this->createAccessDeniedException();
         }
-        $formTeam = $this-> createForm(TeamFormType::class, $team);
+        $formTeam = $this-> createForm(TeamFormType::class, $team, [
+        'coach' => $this->getUser() 
+    ]);
         $formTeam->handleRequest($request);
 
         if($formTeam->isSubmitted() && $formTeam->isValid()) {

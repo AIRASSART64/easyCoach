@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\Entity\Equipment;
 use App\Entity\Stock;
+use App\Entity\User;
 use App\Enum\TypeStockManagment;
+use App\Repository\EquipmentRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -18,14 +20,20 @@ class StockFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $coach = $options['coach'];
         $builder
 
               ->add('equipment', EntityType::class, [
                 'class' => Equipment::class,
                 'choice_label' => 'name',
                 'label' => 'Equipement',
-                'placeholder' => 'Choisir un équipement',   
-            ])
+                'placeholder' => 'Choisir un équipement', 
+                 'query_builder' => function (EquipmentRepository $er) use ($coach) {
+                    return $er->createQueryBuilder('c')
+                        ->andWhere('c.coach = :coach')
+                        ->setParameter('coach', $coach)
+                        ->orderBy('c.name', 'ASC');
+             }, ])
 
             ->add('quantity' , IntegerType::class, [
                 'label' => "Quantité",
@@ -75,6 +83,8 @@ class StockFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Stock::class,
+            'coach' => null, 
         ]);
+        $resolver->setAllowedTypes('coach', [User::class, 'null']);
     }
 }

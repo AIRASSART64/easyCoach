@@ -86,6 +86,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Equipment::class, mappedBy: 'coach')]
     private Collection $equipment;
 
+    /**
+     * @var Collection<int, TeamCategory>
+     */
+    #[ORM\OneToMany(targetEntity: TeamCategory::class, mappedBy: 'coach')]
+    private Collection $teamCategories;
+
     public function __construct()
     {
         $this->players = new ArrayCollection();
@@ -95,6 +101,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->attendances = new ArrayCollection();
         $this->stocks = new ArrayCollection();
         $this->equipment = new ArrayCollection();
+        $this->teamCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -418,6 +425,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($equipment->getCoach() === $this) {
                 $equipment->setCoach(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TeamCategory>
+     */
+    public function getTeamCategories(): Collection
+    {
+        return $this->teamCategories;
+    }
+
+    public function addTeamCategory(TeamCategory $teamCategory): static
+    {
+        if (!$this->teamCategories->contains($teamCategory)) {
+            $this->teamCategories->add($teamCategory);
+            $teamCategory->setCoach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeamCategory(TeamCategory $teamCategory): static
+    {
+        if ($this->teamCategories->removeElement($teamCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($teamCategory->getCoach() === $this) {
+                $teamCategory->setCoach(null);
             }
         }
 

@@ -103,15 +103,24 @@ final class AttendanceController extends AbstractController
     EntityManagerInterface $em
     ): Response 
     {
-    // 1. Récupération de l'événement (Entraînement ou Match)
+   
     $event = ($type === 'training') ? $trainingRepo->find($id) : $gameRepo->find($id);
+    if ($event->getCoach() !== $this->getUser()) {
+    throw $this->createAccessDeniedException("Vous n'êtes pas le coach de cet événement.");
+    }
 
     if (!$event) {
         throw $this->createNotFoundException("L'événement n'existe pas.");
     }
-
-    $players = $playerRepo->findBy(['coach' => $this->getUser()]);
-
+   if ($type === 'game') {
+        $team = $event->getTeam(); 
+        $players = $team ? $team->getPlayer() : []; 
+    } else {
+        $players = $playerRepo->findBy(['coach' => $this->getUser()]);
+    }
+    if ($event->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Accès refusé.");
+    }
   
     $allStatuses = $statusRepo->findAll();
     $orderedStatuses = [];

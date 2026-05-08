@@ -18,7 +18,9 @@ final class StockController extends AbstractController
     #[Route('/', name: 'stock_index' , methods:['GET'])]
     public function index(StockRepository $stockRepository): Response
     {
-        $stocks = $stockRepository->findAll();
+        $stocks = $stockRepository->findBy([
+            'coach' => $this->getUser()
+        ]);
         return $this->render('stock/index.html.twig', [
             'stocks' => $stocks
         ]);
@@ -31,10 +33,13 @@ final class StockController extends AbstractController
         if($equipment) {
             $newStock->setEquipment($equipment);
         }
-        $formStock = $this-> createForm(StockFormType::class, $newStock);
+        $formStock = $this-> createForm(StockFormType::class, $newStock, [
+           'coach' => $this->getUser()
+        ]);
         $formStock->handleRequest($request);
 
         if($formStock->isSubmitted() && $formStock->isValid()) {
+            $newStock->setCoach($this->getUser());
             $em-> persist($newStock);
             $em-> flush();
             
@@ -45,14 +50,21 @@ final class StockController extends AbstractController
       #[Route('/show/{id}', name:'stock_show', methods:['GET'])]
     public function show(Stock $stock)
     {
+        if ($stock->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
+    }
      return $this->render('stock/show.html.twig', ['stock'=>$stock]);
 
 }
   #[Route('/update/{id}', name:'stock_update', methods:['GET', 'POST'])]
     public function update( Stock $stock,  Request $request, EntityManagerInterface $em)
     {
-
-        $formStock = $this-> createForm(StockFormType::class, $stock);
+        if ($stock->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
+    }
+        $formStock = $this-> createForm(StockFormType::class, $stock, [
+            'coach'=>$this->getUser()
+        ]);
         $formStock->handleRequest($request);
 
         if($formStock->isSubmitted() && $formStock->isValid()) {
@@ -67,6 +79,9 @@ final class StockController extends AbstractController
      #[Route('/delete/{id}', name:'stock_delete', methods:['POST'])]
     public function delete(Stock $stock, Request $request, EntityManagerInterface $em) 
     {
+    if ($stock->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");
+    }
       if($this->isCsrfTokenValid('delete' . $stock->getId(), $request->request->get('_token'))) {
         $em->remove($stock);
         $em->flush();

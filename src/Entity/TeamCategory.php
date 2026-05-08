@@ -24,6 +24,9 @@ class TeamCategory
     #[ORM\OneToMany(targetEntity: Team::class, mappedBy: 'category')]
     private Collection $teams;
 
+    #[ORM\ManyToOne(inversedBy: 'teamCategories')]
+    private ?User $coach = null;
+
     public function __construct()
     {
         $this->teams = new ArrayCollection();
@@ -72,6 +75,18 @@ class TeamCategory
                 $team->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCoach(): ?User
+    {
+        return $this->coach;
+    }
+
+    public function setCoach(?User $coach): static
+    {
+        $this->coach = $coach;
 
         return $this;
     }

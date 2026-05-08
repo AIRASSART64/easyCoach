@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Game;
 use App\Entity\Team;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -19,11 +20,17 @@ class GameFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+      
         $builder
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
                 'input'  => 'datetime_immutable',
                 'label'  => 'Date du match'
+            ])
+             ->add('team', EntityType::class, [
+                'class' => Team::class,
+                'label'=> "Nom de l'équipe",
+                'choice_label' => 'name',
             ])
             ->add('opposing_team' , TextType::class, [
                 'label'=> "Nom de l'équipe adverse",
@@ -77,11 +84,8 @@ class GameFormType extends AbstractType
                 'placeholder' => 'Ex: Bonne intensité en 1ère mi-temps, manque de réalisme devant le but...',
         
     ],
-            ])
-            ->add('team', EntityType::class, [
-                'class' => Team::class,
-                'choice_label' => 'name',
             ]);
+           
         //     ->add('coach', EntityType::class, [
         //         'class' => User::class,
         //           'choice_label' => function (User $user) {
@@ -96,6 +100,9 @@ class GameFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Game::class,
+            'coach' => null, 
         ]);
+        $resolver->setAllowedTypes('coach', [User::class, 'null']);
+        
     }
 }

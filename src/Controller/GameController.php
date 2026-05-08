@@ -30,7 +30,9 @@ final class GameController extends AbstractController
         $newGame = new Game();
         $newGame->setCoach($this->getUser());
 
-        $formGame = $this-> createForm(GameFormType::class, $newGame);
+        $formGame = $this-> createForm(GameFormType::class, $newGame, [
+            'coach'=>$this->getUser()
+        ]);
         $formGame->handleRequest($request);
 
         if($formGame->isSubmitted() && $formGame->isValid()) {
@@ -56,7 +58,9 @@ final class GameController extends AbstractController
     {
          if ($game->getCoach() !== $this->getUser()) {
         throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");}
-        $formGame = $this-> createForm(GameFormType::class, $game);
+        $formGame = $this-> createForm(GameFormType::class, $game, [
+            'coach'=>$this->getUser()
+        ]);
         $formGame->handleRequest($request);
 
         if($formGame->isSubmitted() && $formGame->isValid()) {

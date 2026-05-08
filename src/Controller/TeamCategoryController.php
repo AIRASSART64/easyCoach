@@ -28,10 +28,13 @@ final class TeamCategoryController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $teamCategory = new TeamCategory();
+       
+
         $form = $this->createForm(TeamCategoryType::class, $teamCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+             $teamCategory->setCoach($this->getUser());
             $entityManager->persist($teamCategory);
             $entityManager->flush();
 
@@ -47,6 +50,8 @@ final class TeamCategoryController extends AbstractController
     #[Route('/show/{id}', name: 'team_category_show', methods: ['GET'])]
     public function show(TeamCategory $teamCategory): Response
     {
+        if ($teamCategory->getCoach() !== $this->getUser()) {
+        throw $this->createAccessDeniedException("Vous n'avez pas accés à ces informations");}
        
         return $this->render('team_category/show.html.twig', [
             'team_category' => $teamCategory,
@@ -56,6 +61,9 @@ final class TeamCategoryController extends AbstractController
     #[Route('/update/{id}', name: 'team_category_update', methods: ['GET', 'POST'])]
     public function edit(Request $request, TeamCategory $teamCategory, EntityManagerInterface $entityManager): Response
     {
+         if ($teamCategory->getCoach() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
         $form = $this->createForm(TeamCategoryType::class, $teamCategory);
         $form->handleRequest($request);
 
@@ -74,6 +82,9 @@ final class TeamCategoryController extends AbstractController
     #[Route('/delete/{id}', name: 'team_category_delete', methods: ['POST'])]
     public function delete(Request $request, TeamCategory $teamCategory, EntityManagerInterface $entityManager): Response
     {
+         if ($teamCategory->getCoach() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
         if ($this->isCsrfTokenValid('delete'.$teamCategory->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($teamCategory);
             $entityManager->flush();

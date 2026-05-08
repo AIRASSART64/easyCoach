@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Equipment;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -55,6 +56,9 @@ class EquipmentFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Equipment::class,
+            'coach' => null, 
         ]);
+        $resolver->setAllowedTypes('coach', [User::class, 'null']);
+        
     }
 }

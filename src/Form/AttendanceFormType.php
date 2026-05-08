@@ -7,6 +7,7 @@ use App\Entity\Game;
 use App\Entity\Player;
 use App\Entity\Status;
 use App\Entity\Training;
+use App\Entity\User;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TrainingRepository;
@@ -119,6 +120,9 @@ class AttendanceFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Attendance::class,
+            'coach' => null, 
         ]);
+        $resolver->setAllowedTypes('coach', [User::class, 'null']);
+        
     }
 }
