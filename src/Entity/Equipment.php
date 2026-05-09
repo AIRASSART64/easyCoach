@@ -120,4 +120,13 @@ class Equipment
 
         return $this;
     }
+
+    public function getCurrentStock(): int
+{
+    $total = $this->total_quantity ?? 0;
+    foreach ($this->stocks as $stock) {
+        $total += ($stock->getQuantity() * $stock->getType()->getSign());
+    }
+    return $total;
+}
 }

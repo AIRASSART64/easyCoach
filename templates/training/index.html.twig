@@ -5,9 +5,9 @@
 {% block body %}
 <div class="max-w-4xl mx-auto px-4 mt-8 pb-20">
 
-    {# --- EN-TÊTE --- #}
-    <div class="mb-10">
-        <h2 class="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none mb-4">
+    
+    <div class="mb-10 ">
+        <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none mb-4">
             Les <span class="text-indigo-600">entraînements</span>
         </h2>
         
@@ -17,17 +17,16 @@
         </a>
     </div>
 
-    {# --- GRILLE DES ENTRAÎNEMENTS --- #}
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {% for training in trainings %}
         <div class="bg-white border-4 border-slate-900 p-6 flex flex-col justify-between relative overflow-hidden group ]">
 
-            {# BADGE DATE #}
             <span class="absolute top-0 left-0 bg-slate-900 text-white text-[9px] font-black px-3 py-1 uppercase tracking-tighter italic">
                 {{ training.date ? training.date|date('d/m/Y') : 'À programmer' }}
             </span>
 
-            {# INFOS SÉANCE #}
+          
             <div class="mb-6 mt-6">
                 <div class="flex items-center gap-2 mb-3">
                     {% if training.attendances|length > 0 %}
@@ -46,28 +45,27 @@
                 </p>
             </div>
 
-            {# --- ACTIONS --- #}
+          
             <div class="space-y-2">
-                {# BOUTON APPEL (Action principale) #}
+               
                 <a href="{{ path('attendance_take_mass', {'type': 'training', 'id': training.id}) }}" 
                    class="block text-center bg-emerald-500 text-white py-2 text-[10px] font-black uppercase tracking-widest border-2 border-slate-900 hover:bg-slate-900 transition-colors">
                    Faire l'appel
                 </a>
 
                 <div class="flex gap-2 border-t-2 border-slate-900 pt-3">
-                    {# VOIR #}
+                 
                     <a href="{{ path('training_show', {id: training.id}) }}"
                         class="flex-1 text-center text-[9px] font-black uppercase tracking-widest bg-slate-900 text-white px-2 py-2 hover:bg-indigo-600 transition-colors">
                         Voir
                     </a>
 
-                    {# MODIFIER #}
                     <a href="{{ path('training_update', {id: training.id}) }}"
                         class="flex-1 text-center text-[9px] font-black uppercase tracking-widest border-2 border-slate-900 px-2 py-2 hover:bg-slate-900 hover:text-white transition-all">
                         Modifier
                     </a>
 
-                    {# SUPPRIMER #}
+                   
                     {% include "training/_delete_form.html.twig" %}
                 </div>
             </div>

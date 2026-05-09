@@ -3,76 +3,93 @@
 {% block title %}Profil : {{ player.firstname }} {{ player.name }}{% endblock %}
 
 {% block body %}
-<div class="max-w-xl mx-auto px-4 mt-6 pb-20">
- 
-    <div class="mb-8">
+<div class="max-w-xl mx-auto px-4 mt-10 pb-20">
+    
+  
+    <div class="mb-10 text-center sm:text-left">
         <h1 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">
             {{ player.firstname }}
             <span class="text-indigo-600">{{ player.name }}</span>
         </h1>
     </div>
 
-    <div class="space-y-6">
+    <div class="space-y-10">
+
+        <div class="bg-white border-4 border-slate-900 p-6  relative">
     
-        <div class="bg-white border-2 border-slate-900 p-6">
-            <h2 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Informations Joueur</h2>
+            <div class="absolute -top-4 left-6 bg-slate-900 text-white text-[10px] font-black px-3 py-1 uppercase tracking-widest border-2 border-slate-900">
+                Fiche Joueur
+            </div>
             
-            <div class="space-y-4">
+            <div class="grid grid-cols-1 gap-6 mt-4">
                 <div>
-                    <span class="block text-xs font-bold uppercase text-slate-500">Date de naissance</span>
-                    <span class="text-lg font-bold">{{ player.birthDate ? player.birthDate|date('d/m/Y') : 'Non renseignée' }}</span>
+                    <span class="block text-[10px] font-black uppercase text-indigo-600 tracking-widest mb-1">Date de naissance</span>
+                    <span class="text-2xl font-black uppercase tracking-tighter">{{ player.birthDate ? player.birthDate|date('d/m/Y') : 'Non renseignée' }}</span>
                 </div>
 
-                {% if player.phone %}
-                <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t-4 border-slate-900">
+                    {% if player.phone %}
                     <div>
-                        <span class="block text-xs font-bold uppercase text-slate-500">Téléphone</span>
-                        <span class="text-lg font-bold">{{ player.phone }}</span>
+                        <span class="block text-[10px] font-black uppercase text-indigo-600 tracking-widest mb-1">Téléphone</span>
+                        <span class="text-xl font-black tracking-tight">{{ player.phone }}</span>
                     </div>
-                </div>
-                {% endif %}
+                    {% endif %}
 
-                {% if player.email %}
-                <div class="pt-2 border-t border-slate-100">
-                    <span class="block text-xs font-bold uppercase text-slate-500">Email</span>
-                    <span class="text-md font-bold break-all">{{ player.email }}</span>
+                    {% if player.email %}
+                    <div>
+                        <span class="block text-[10px] font-black uppercase text-indigo-600 tracking-widest mb-1">Email</span>
+                        <span class="text-md font-black break-all leading-tight">{{ player.email }}</span>
+                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
 
-        <div class="bg-slate-50 border-2 border-slate-900 p-6">
-            <h2 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Coordonnées du resposable légal</h2>
+    
+        <div class="bg-yellow-50 border-4 border-slate-900 p-6  relative">
+    
+            <div class="absolute -top-4 left-6 bg-yellow-400 text-slate-900 text-[10px] font-black px-3 py-1 uppercase tracking-widest border-2 border-slate-900">
+                Contact d'urgence
+            </div>
             
-            <div class="space-y-4">
+            <div class="space-y-6 mt-4">
                 {% if player.responsablePhone %}
                 <div class="flex justify-between items-center">
                     <div>
-                        <span class="block text-xs font-bold uppercase text-slate-500">Tel. Responsable</span>
-                        <span class="text-lg font-bold">{{ player.responsablePhone }}</span>
+                        <span class="block text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">Parent / Tuteur</span>
+                        <span class="text-2xl font-black tracking-tight">{{ player.responsablePhone }}</span>
                     </div>
-                
+                    <div class="bg-red-500 text-white p-2 border-2 border-slate-900 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                    </div>
                 </div>
                 {% else %}
-                    <p class="text-sm italic text-red-500 font-bold uppercase">Aucun numéro d'urgence !</p>
+                    <div class="bg-red-100 border-4 border-red-500 p-4">
+                        <p class="text-sm font-black uppercase text-red-600 tracking-widest text-center italic">⚠️ Aucun numéro d'urgence !</p>
+                    </div>
                 {% endif %}
 
                 {% if player.responsableEmail %}
-                <div class="pt-2 border-t border-slate-200">
-                    <span class="block text-xs font-bold uppercase text-slate-500">Email Responsable</span>
-                    <span class="text-md font-bold break-all">{{ player.responsableEmail }}</span>
+                <div class="pt-4 border-t-4 border-slate-900">
+                    <span class="block text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">Email Responsable</span>
+                    <span class="text-md font-black break-all leading-tight">{{ player.responsableEmail }}</span>
                 </div>
                 {% endif %}
             </div>
         </div>
 
-        {# Actions de bas de page #}
-        <div class="grid grid-cols-2 gap-4 mt-8">
-            <a href="{{ path('player_update', {'id': player.id}) }}" class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-slate-50 transition-all">
-                Modifier
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12">
+            <a href="{{ path('player_update', {'id': player.id}) }}" 
+               class="bg-indigo-600 text-white text-center py-4 border-4 border-slate-900 font-black uppercase text-sm tracking-widest  active:shadow-none active:translate-x-1 active:translate-y-1 transition-all">
+                Modifier le profil
             </a>
-            <a href="{{ path('player_index') }}" class="bg-slate-900 text-white text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-indigo-600 transition-all">
-                Retour
+            
+            <a href="{{ path('player_index') }}" 
+               class="bg-white text-slate-900 text-center py-4 border-4 border-slate-900 font-black uppercase text-sm tracking-widest  active:shadow-none active:translate-x-1 active:translate-y-1 transition-all">
+                Retour à la liste
             </a>
         </div>
     </div>
