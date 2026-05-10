@@ -25,7 +25,9 @@
 
             <div class="bg-white border-4 border-slate-900 p-6 flex flex-col justify-between relative overflow-hidden group ">
 
-          
+                <a href="{{ path('equipment_show', {id: equipment.id}) }}"
+                        
+                    </a>
                 <span class="absolute top-0 left-0 bg-slate-900 text-white text-[8px] font-black px-3 py-1 uppercase tracking-tighter italic">
                     {{ equipment.category|default('Général') }}
                 </span>
@@ -60,10 +62,6 @@
 
 
                 <div class="flex flex-wrap gap-2 border-t-2 border-slate-900 pt-4">
-                    <a href="{{ path('equipment_show', {id: equipment.id}) }}"
-                        class="flex-1 text-center text-[9px] font-black uppercase tracking-widest bg-slate-900 text-white px-2 py-3 hover:bg-indigo-600 transition-colors">
-                        Voir
-                    </a>
 
                     <a href="{{ path('equipment_update', {id: equipment.id}) }}"
                         class="flex-1 text-center text-[9px] font-black uppercase tracking-widest border-2 border-slate-900 px-2 py-3 hover:bg-slate-900 hover:text-white transition-all">
@@ -74,10 +72,11 @@
                         class="flex-1 text-center text-[9px] font-black uppercase tracking-widest bg-emerald-500 text-white px-2 py-3 hover:bg-slate-900 transition-colors">
                         + Stock
                     </a>
+                    {% include "equipment/_delete_form.html.twig" %}
                     
-                    <div class="w-full mt-2 sm:w-auto sm:mt-0">
-                        {% include "equipment/_delete_form.html.twig" %}
-                    </div>
+                    {# <div class="w-full mt-2 sm:w-auto sm:mt-0">
+                        
+                    </div> #}
                 </div>
             </div>
         {% else %}

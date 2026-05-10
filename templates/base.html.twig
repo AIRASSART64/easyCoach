@@ -80,7 +80,11 @@
                 font-size: 16px !important;
             }
         }
-
+        @media screen and (max-width: 768px) {
+            body {
+                padding-bottom: 70px; 
+            }
+        }
     
         .btn-mobile {
             @apply w-full py-5 text-lg font-black uppercase border-4 border-slate-900 transition-all active:scale-95;
@@ -98,29 +102,28 @@
 
 <body class="bg-white text-slate-950 antialiased min-h-screen flex flex-col">
 
-    {# --- HEADER / NAVIGATION --- #}
     <nav class="bg-slate-950 text-white sticky top-0 z-50 border-b-4 border-indigo-600">
         <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
             
-            {# LOGO #}
+     
             <a href="{{ path('home_index') }}" class="text-2xl font-black tracking-tighter italic hover:text-indigo-400 transition-colors">
                 EASY<span class="text-indigo-500">COACH</span>
             </a>
 
             <div class="flex items-center gap-4">
                 {% if app.user %}
-                    {# CONNECTÉ : Prénom + Menu #}
+                   
                     <div class="hidden md:block bg-indigo-600 px-4 py-2 border-2 border-white font-black text-xs uppercase italic">
                         Coach {{ app.user.firstname }}
                     </div>
-                     <a href="{{ path('app_logout') }}" class="px-4 py-2 bg-slate-600 text-white text-xs uppercase italic border-2 border-white hover:bg-red-700 transition-colors">Déconnexion</a>
-                    <button onclick="toggleMenu()" class="p-3 bg-white text-slate-950 border-2 border-slate-950 hover:bg-indigo-600 hover:text-white transition-all">
+                     <a href="{{ path('app_logout') }}" class="px-3 py-2 bg-slate-600 text-white text-xs uppercase italic border-2 border-white hover:bg-red-700 transition-colors">Déconnexion</a>
+                    <button onclick="toggleMenu()" class="hidden md:block p-3 bg-white text-slate-950 border-2 border-slate-950 hover:bg-indigo-600 hover:text-white transition-all">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 6h16M4 12h16m-7 6h7"></path>
                         </svg>
                     </button>
                 {% else %}
-                    {# NON CONNECTÉ : Actions rapides #}
+                   
                     <div class="flex gap-2">
                         <a href="{{ path('app_login') }}" class="text-[10px] font-black uppercase tracking-widest border-2 border-white px-4 py-2 hover:bg-white hover:text-slate-950 transition-all">Connexion</a>
                         <a href="{{ path('app_register') }}" class="text-[10px] font-black uppercase tracking-widest bg-indigo-600 border-2 border-indigo-600 px-4 py-2 hover:bg-transparent transition-all">S'inscrire</a>
@@ -129,7 +132,7 @@
             </div>
         </div>
 
-        {# --- MENU MOBILE / NAV FONCTIONNELLE --- #}
+     
         {% if app.user %}
         <div id="mobile-menu" class="hidden bg-slate-900 border-b-4 border-slate-950">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 font-black uppercase text-sm tracking-widest">
@@ -143,10 +146,46 @@
         {% endif %}
     </nav>
 
-    {# --- CONTENU PRINCIPAL --- #}
+    
     <main class="flex-grow">
         {% block body %}{% endblock %}
     </main>
+    {% if app.user %}
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950 border-t-4 border-indigo-600 z-[100] px-2 py-2">
+        <div class="flex justify-between items-center max-w-md mx-auto">
+            
+       
+            <a href="{{ path('player_index') }}" class="flex flex-col items-center justify-center flex-1 text-white hover:text-indigo-400 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <span class="text-[8px] font-black uppercase mt-1">Joueurs</span>
+            </a>
+
+           
+            <a href="{{ path('training_index') }}" class="flex flex-col items-center justify-center flex-1 text-white hover:text-indigo-400 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-[8px] font-black uppercase mt-1">Séances</span>
+            </a>
+
+           
+            <a href="{{ path('team_index') }}" class="flex flex-col items-center justify-center flex-1 text-white hover:text-indigo-400 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-[8px] font-black uppercase mt-1">Séances</span>
+            </a>
+
+           
+            <a href="{{ path('game_index') }}" class="flex flex-col items-center justify-center flex-1 text-white hover:text-indigo-400 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <span class="text-[8px] font-black uppercase mt-1">Matchs</span>
+            </a>
+
+            <a href="{{ path('equipment_index') }}" class="flex flex-col items-center justify-center flex-1 text-white hover:text-indigo-400 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                <span class="text-[8px] font-black uppercase mt-1">Stocks</span>
+            </a>
+
+        </div>
+    </div>
+    {% endif %}
 
     {# --- FOOTER SIMPLE --- #}
     <footer class="bg-slate-950 text-white border-t-8 border-indigo-600 py-10">

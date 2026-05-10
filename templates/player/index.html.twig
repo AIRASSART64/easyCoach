@@ -1,17 +1,16 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Effectif - Joueurs{% endblock %}
 
 {% block body %}
 <div class="max-w-4xl mx-auto px-4 mt-8 pb-20">
-    
-   
+
+
     <div class="mb-10">
         <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none mb-4">
             Gestion de <span class="text-indigo-600">l'effectif</span>
         </h2>
-        
+
         <a href="{{ path('player_new') }}"
             class="inline-block bg-slate-900 text-white px-6 py-3 text-[10px] font-black uppercase tracking-widest border-2 border-slate-900 hover:bg-white hover:text-slate-900 transition-all ">
             + Ajouter un joueur
@@ -20,10 +19,17 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {% for player in players %}
-        <div class="bg-white border-4 border-slate-900 p-6 flex flex-col justify-between relative overflow-hidden group ">
+        <div
+            class="bg-white border-4 border-slate-900 p-6 flex flex-col justify-between relative overflow-hidden group ">
 
-            <span class="absolute top-0 left-0 bg-slate-900 text-white text-[8px] font-black px-3 py-1 uppercase tracking-tighter italic">
-                Joueur
+            <span
+                class="absolute top-0 left-0 bg-slate-900 text-white text-[8px] font-black px-3 py-1 uppercase tracking-tighter italic">
+                {% if player.teams|length > 0 %}
+
+                {{ player.teams|map(p => p.name)|join(' / ') }}
+                {% else %}
+                Sans équipe
+                {% endif %}
             </span>
 
             <div class="mb-8 mt-5">
@@ -34,25 +40,25 @@
                     Né le : {{ player.birthDate ? player.birthDate|date('d/m/Y') : 'NC' }}
                 </p>
                 {% if player.position %}
-                    
-               
+
+
                 <p class="text-slate-400 text-[9px] font-bold uppercase tracking-widest italic mt-1">
-                    
+
                     Poste : {{ player.position.value }}
                 </p>
-                 {% endif %}
+                {% endif %}
             </div>
 
-       
+
             <div class="flex flex-wrap gap-2 border-t-2 border-slate-900 pt-4">
-                
-          
+
+
                 <a href="{{ path('player_show', {id: player.id}) }}"
                     class="flex-1 text-center text-[9px] font-black uppercase tracking-widest bg-slate-900 text-white px-2 py-2 hover:bg-indigo-600 transition-colors">
                     Voir
                 </a>
 
-       
+
                 <a href="{{ path('player_update', {id: player.id}) }}"
                     class="flex-1 text-center text-[9px] font-black uppercase tracking-widest border-2 border-slate-900 px-2 py-2 hover:bg-slate-900 hover:text-white transition-all">
                     Modifier

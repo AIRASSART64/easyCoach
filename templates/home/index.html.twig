@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Tableau de bord - Coach{% endblock %}
@@ -6,12 +5,14 @@
 {% block body %}
 <div class="max-w-4xl mx-auto px-4 mt-8 pb-20">
 
-    <section class="mb-10 flex flex-col md:flex-row items-center gap-6 bg-slate-900 text-white p-6 border-4 border-slate-900 ">
-       
-        <div class="w-20 h-20 bg-indigo-600 border-4 border-white flex items-center justify-center text-2xl font-black shrink-0 md:ml-2">
+    <section
+        class="mb-10 flex flex-col md:flex-row items-center gap-6 bg-slate-900 text-white p-6 border-4 border-slate-900 ">
+
+        <div
+            class="w-20 h-20 bg-indigo-600 border-4 border-white flex items-center justify-center text-2xl font-black shrink-0 md:ml-2">
             {{ app.user.firstname|first|upper }}{{ app.user.Name|first|upper }}
         </div>
-        
+
         <div class="flex-grow text-center md:text-left">
             <span class="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-300">Coach Principal</span>
             <h1 class="text-3xl font-black uppercase tracking-tighter leading-none mt-1">
@@ -21,115 +22,130 @@
         </div>
 
         <div class="w-full md:w-auto">
-            <a href="{{ path('profil_update') }}" 
-               class="block text-center bg-white text-slate-900 px-6 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all border-2 border-white">
+            <a href="{{ path('profil_update') }}"
+                class="block text-center bg-white text-slate-900 px-6 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all border-2 border-white">
                 Modifier le profil
             </a>
         </div>
     </section>
 
 
-   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-    <div class="bg-white border-2 border-slate-900 p-4 ">
-        <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Effectif</span>
-        <span class="text-2xl font-black text-slate-900">{{ countPlayers }}</span>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div class="bg-white border-2 border-slate-900 p-4 ">
+            <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Effectif</span>
+            <span class="text-2xl font-black text-slate-900">{{ countPlayers }}</span>
+        </div>
+        <div class="bg-white border-2 border-slate-900 p-4 ">
+            <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Assiduité</span>
+            <span class="text-2xl font-black text-indigo-600">{{ attendanceRate }}%</span>
+        </div>
+        <div class="bg-white border-2 border-slate-900 p-4 ">
+            <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Blessés</span>
+            <span class="text-2xl font-black text-red-500">{{ injuredCount }}</span>
+        </div>
+        <div class="bg-white border-2 border-slate-900 p-4 ">
+            <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Matchs</span>
+            <span class="text-2xl font-black text-slate-900">{{ countGames }}</span>
+        </div>
     </div>
-    <div class="bg-white border-2 border-slate-900 p-4 ">
-        <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Assiduité</span>
-        <span class="text-2xl font-black text-indigo-600">{{ attendanceRate }}%</span>
-    </div>
-    <div class="bg-white border-2 border-slate-900 p-4 ">
-        <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Blessés</span>
-        <span class="text-2xl font-black text-red-500">{{ injuredCount }}</span>
-    </div>
-    <div class="bg-white border-2 border-slate-900 p-4 ">
-        <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Matchs</span>
-        <span class="text-2xl font-black text-slate-900">{{ countGames }}</span>
-    </div>
-</div>
 
     <div class="mb-6 flex justify-between items-end">
         <h2 class="text-xs font-black uppercase tracking-[0.2em] text-slate-900">A venir</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
+        <a href="{{ path('training_show', {'id': nextTraining.id}) }}" class="absolute inset-0 z-10" aria-label="Voir l'entraînement"></a>
 
         <div class="bg-white border-4 border-slate-900 p-6 ">
             <div class="flex justify-between items-start mb-4">
-                <span class="bg-slate-900 text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest italic">Séance</span>
+                <span
+                    class="bg-slate-900 text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest italic">Séance</span>
                 {% if nextTraining %}
-                    <span class="text-indigo-600 font-black text-xs uppercase">{{ nextTraining.date|date('d/m/Y') }}</span>
+                <span class="text-indigo-600 font-black text-xs uppercase">{{ nextTraining.date|date('d/m/Y') }}</span>
                 {% endif %}
             </div>
 
             {% if nextTraining %}
-                <h3 class="text-2xl font-black uppercase leading-tight mb-2">
-                    {{ nextTraining.theme.value }}
-                </h3>
+            <h3 class="text-2xl font-black uppercase leading-tight mb-2">
+                {{ nextTraining.theme.value }}
+            </h3>
+
+            <p class="text-slate-500 text-[10px] font-bold uppercase mb-6">
+                🕒 {{ nextTraining.startTime|date('H:i') }}
+
         
-                <p class="text-slate-500 text-[10px] font-bold uppercase mb-6">
-                    🕒 {{ nextTraining.startTime|date('H:i') }} -  {{ nextTraining.endTime|date('H:i') }}
-                </p>
-                <a href="{{ path('attendance_take_mass', {'type': 'training', 'id': nextTraining.id}) }}" 
-                   class="block text-center bg-indigo-600 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-slate-900 transition-all active:translate-x-1 active:translate-y-1">
-                  Gérer les présences
-                </a>
+                {% if trainingDuration %}
+                <span class="ml-2 text-indigo-600">Durée :{{ trainingDuration }}</span>
+                {% endif %}
+            </p>
+            <a href="{{ path('attendance_take_mass', {'type': 'training', 'id': nextTraining.id}) }}"
+                class="block text-center bg-indigo-600 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-slate-900 transition-all active:translate-x-1 active:translate-y-1">
+                Gérer les présences
+            </a>
             {% else %}
-                <div class="py-6 text-center border-2 border-dashed border-slate-200">
-                    <p class="text-slate-400 font-bold uppercase text-[10px] mb-4 tracking-widest">Aucune séance prévue</p>
-                    <a href="{{ path('training_new') }}" class="text-indigo-600 font-black uppercase text-xs hover:underline">+ Créer une séance</a>
-                </div>
+            <div class="py-6 text-center border-2 border-dashed border-slate-200">
+                <p class="text-slate-400 font-bold uppercase text-[10px] mb-4 tracking-widest">Aucune séance prévue</p>
+                <a href="{{ path('training_new') }}"
+                    class="text-indigo-600 font-black uppercase text-xs hover:underline">+ Créer une séance</a>
+            </div>
             {% endif %}
         </div>
 
         <div class="bg-white border-4 border-slate-900 p-6 ">
+             <a href="{{ path('game_show', {'id': nextGame.id}) }}" class="absolute inset-0 z-10" aria-label="Voir l'entraînement"></a>
             <div class="flex justify-between items-start mb-4">
-                <span class="bg-indigo-600 text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest italic">Compétition</span>
+                <span
+                    class="bg-indigo-600 text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest italic">Compétition</span>
                 {% if nextGame %}
-                    <span class="text-slate-900 font-black text-xs uppercase">{{ nextGame.date|date('d/m/Y') }}</span>
+                <span class="text-slate-900 font-black text-xs uppercase">{{ nextGame.date|date('d/m/Y') }}</span>
                 {% endif %}
             </div>
 
             {% if nextGame %}
-                <h3 class="text-2xl font-black uppercase leading-tight mb-1">
-                 <span class="text-indigo-600">{{ nextGame.team.name }}</span> VS {{ nextGame.opposingTeam }}
-                </h3>
-                <p class="text-slate-500 text-[10px] font-bold uppercase mb-6 italic">
-                    📍 Lieu : {{ nextGame.place }}
-                </p>
-                <a href="{{ path('attendance_take_mass', {'type': 'game', 'id': nextGame.id}) }}" 
-                   class="block text-center bg-slate-900 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-indigo-600 transition-all active:translate-x-1 active:translate-y-1">
-                   Gérer les présences
-                </a>
+            <h3 class="text-2xl font-black uppercase leading-tight mb-1">
+                <span class="text-indigo-600">{{ nextGame.team.name }}</span> VS {{ nextGame.opposingTeam }}
+            </h3>
+            <p class="text-slate-500 text-[10px] font-bold uppercase mb-6 italic">
+                📍 Lieu : {{ nextGame.place }}
+            </p>
+            <a href="{{ path('attendance_take_mass', {'type': 'game', 'id': nextGame.id}) }}"
+                class="block text-center bg-slate-900 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-indigo-600 transition-all active:translate-x-1 active:translate-y-1">
+                Gérer les présences
+            </a>
             {% else %}
-                <div class="py-6 text-center border-2 border-dashed border-slate-200">
-                    <p class="text-slate-400 font-bold uppercase text-[10px] mb-4 tracking-widest">Aucun match programmé</p>
-                    <a href="{{ path('game_new') }}" class="text-slate-900 font-black uppercase text-xs hover:underline">+ Organiser un match</a>
-                </div>
+            <div class="py-6 text-center border-2 border-dashed border-slate-200">
+                <p class="text-slate-400 font-bold uppercase text-[10px] mb-4 tracking-widest">Aucun match programmé</p>
+                <a href="{{ path('game_new') }}" class="text-slate-900 font-black uppercase text-xs hover:underline">+
+                    Organiser un match</a>
+            </div>
             {% endif %}
         </div>
 
     </div>
 
-  
+
     <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <a href="{{ path('player_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
-             Gérer les joueurs
+        <a href="{{ path('player_index') }}"
+            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
+            Gérer les joueurs
         </a>
-        <a href="{{ path('training_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
-           Gérer les entraînements
+        <a href="{{ path('training_index') }}"
+            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
+            Gérer les entraînements
         </a>
-     
-        <a href="{{ path('team_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all text-center">
-             Gérer les équipes
+
+        <a href="{{ path('team_index') }}"
+            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all text-center">
+            Gérer les équipes
         </a>
-        <a href="{{ path('game_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
-             Gérer les matchs
+        <a href="{{ path('game_index') }}"
+            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
+            Gérer les matchs
         </a>
-        
-        <a href="{{ path('equipment_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all text-center">
-             Gérer les équipements
+
+        <a href="{{ path('equipment_index') }}"
+            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all text-center">
+            Gérer les équipements
         </a>
     </div>
 
