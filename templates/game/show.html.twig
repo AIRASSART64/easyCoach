@@ -3,81 +3,100 @@
 {% block title %}Match vs {{ game.opposingTeam }}{% endblock %}
 
 {% block body %}
-<div class="max-w-xl mx-auto px-4 mt-6 pb-20">
-    <a href="{{ path('game_index') }}" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 mb-6 block">
-        ← Retour aux matchs
+<div class="max-w-2xl mx-auto px-4 mt-8 pb-20">
+  
+    <a href="{{ path('game_index') }}" class="group text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 mb-8 block transition-colors">
+        <span class="inline-block transform group-hover:-translate-x-1 transition-transform">←</span> Retour aux matchs
     </a>
 
-    <div class="mb-8">
-        <span class="inline-block bg-indigo-600 text-white text-xs font-black px-3 py-1 uppercase mb-2">
-            {{ game.date ? game.date|date('d/m/Y') : 'Date à définir' }}
-        </span>
-        <h2 class="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">
-            {{ game.team.name }} <br>
-            <span class="text-indigo-600 text-2xl">VS</span> {{ game.opposingTeam }}
+    <div class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+            <span class="bg-indigo-600 text-white text-[10px] font-black px-3 py-1 uppercase tracking-tighter italic">
+                {{ game.date ? game.date|date('d/m/Y') : 'À programmer' }}
+            </span>
+            {% if game.scoreHome is not null %}
+                <span class="bg-slate-900 text-white text-[10px] font-black px-3 py-1 uppercase tracking-tighter">Terminé</span>
+            {% else %}
+                <span class="bg-emerald-500 text-white text-[10px] font-black px-3 py-1 uppercase tracking-tighter animate-pulse">À venir</span>
+            {% endif %}
+        </div>
+        
+        <h2 class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-[0.8]">
+            {{ game.team.name }}
+            <span class="text-indigo-600 text-3xl">VS</span> {{ game.opposingTeam }}
         </h2>
     </div>
 
-    <div class="space-y-6">
+    <div class="grid grid-cols-1 gap-8">
         
-        <div class="bg-white border-4 border-slate-900 p-6 ">
-            <h3 class="text-xs font-black uppercase text-slate-900 mb-4 tracking-widest">Le Groupe & Convocations</h3>
+        
+        <div class="bg-white border-4 border-slate-900 p-6 relative overflow-hidden">
             
-            <a href="{{ path('attendance_take_mass', {'type': 'game', 'id': game.id}) }}" 
-               class="block w-full text-center bg-slate-900 text-white py-4 font-black uppercase tracking-widest text-sm hover:bg-indigo-600 transition-all">
-               {% if game.attendances|length > 0 %}
-                     Modifier le groupe sélectionné
-               {% else %}
-                     Sélectionner les joueurs convoqués
-               {% endif %}
-            </a>
+            
+            <h3 class="text-sm font-black uppercase text-slate-900 mb-6 tracking-widest border-b-2 border-slate-100 pb-2">
+                Gérer l'effectif
+            </h3>
 
-         
-            {% if game.attendances|length > 0 %}
-                <div class="mt-6 border-t-2 border-slate-100 pt-4">
-                    <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Joueurs convoqués :</p>
+            {% if game.team %}
+               <div class="mt-7 mb-7">
+                    <p class="text-[9px] font-black uppercase text-slate-400 mb-3 tracking-widest italic">Effectif retenu :</p>
                     <div class="flex flex-wrap gap-2">
-                        {% for att in game.attendances %}
-                            
-                            {% if att.status.name|lower in ['convoqué', 'présent', 'titulaire', 'remplaçant'] %}
-                                <span class="bg-slate-100 border border-slate-900 px-2 py-1 text-[10px] font-bold uppercase">
-                                    {{ att.player.name }}
+                        {% for player in game.team.player %}
+                           
+                                <span class="bg-slate-50 border-2 border-slate-900 px-3 py-1.5 text-[10px] font-black uppercase italic ]">
+                                  <a href="{{path('player_show', { 'id': player.id})}}">{{ player.firstname }} {{ player.name }}</a>
+                                    
                                 </span>
-                            {% endif %}
+                           
                         {% endfor %}
+                    </div>
+                </div>
+                
+            {% endif %}
+
+              <a href="{{ path('attendance_take_mass', {'type': 'game', 'id': game.id}) }}" 
+               class="block w-full text-center bg-emerald-500 text-white py-4 font-black uppercase tracking-widest text-xs border-2 border-slate-900 hover:bg-slate-900 transition-all active:translate-x-1 active:translate-y-1">
+             
+                   Gérer les absences
+            </a>
+        </div>
+
+   
+        <div class="bg-white border-4 border-slate-900 p-6 relative">
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <span class="block text-[10px] font-black uppercase text-indigo-600 mb-1 tracking-widest">Localisation</span>
+                    <span class="text-xl font-black uppercase leading-tight">{{ game.place }}</span>
+                </div>
+                <div class="text-right">
+                    <span class="block text-[10px] font-black uppercase text-indigo-600 mb-1 tracking-widest">Résultat</span>
+                    <span class="text-1xl font-black italic">
+                        {% if game.scoreHome is not null %}
+                            {{ game.scoreHome }} — {{ game.scoreAway }}
+                        {% else %}
+                            A venir
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            {% if game.coachObservation %}
+                <div class="mt-8 pt-6 border-t-2 border-slate-900">
+                    <span class="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest italic">Analyse du coach</span>
+                    <div class="bg-slate-50 p-4 border-l-4 border-indigo-600">
+                        <p class="text-sm font-bold text-slate-700 leading-relaxed italic">"{{ game.coachObservation }}"</p>
                     </div>
                 </div>
             {% endif %}
         </div>
 
-        
-        <div class="bg-white border-2 border-slate-900 p-6">
-            <h3 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Détails Techniques</h3>
-            
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <span class="block text-[10px] font-bold uppercase text-slate-500">Lieu :</span>
-                    <span class="text-sm font-black uppercase">{{ game.place }}</span>
-                </div>
-                <div>
-                    <span class="block text-[10px] font-bold uppercase text-slate-500">Score Final :</span>
-                    <span class="text-sm font-black">{{ game.scoreHome|default('?') }} - {{ game.scoreAway|default('?') }}</span>
-                </div>
-            </div>
-
-            {% if game.coachObservation %}
-                <div class="mt-4 pt-4 border-t border-slate-100">
-                    <span class="block text-[10px] font-bold uppercase text-slate-500">Bilan du coach :</span>
-                    <p class="text-sm italic text-slate-700 mt-1">{{ game.coachObservation }}</p>
-                </div>
-            {% endif %}
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-            <a href="{{ path('game_update', {'id': game.id}) }}" class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-sm hover:bg-slate-50 transition-all">
-                Modifier le match
+      
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t-4 border-slate-900 pt-8">
+            <a href="{{ path('game_update', {'id': game.id}) }}" 
+               class="bg-white text-slate-900 text-center py-4 border-2 border-slate-900 font-black uppercase text-xs tracking-widest hover:bg-slate-900 hover:text-white transition-all">
+                Modifier 
             </a>
-            <div class="flex">
+            <div class="w-full">
                 {% include "game/_delete_form.html.twig" %}
             </div>
         </div>

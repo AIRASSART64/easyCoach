@@ -26,9 +26,17 @@
                 class="block text-center bg-white text-slate-900 px-6 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all border-2 border-white">
                 Modifier le profil
             </a>
-        </div>
+      
     </section>
 
+       <div class="hidden md:grid mt-10 mb-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <a href="{{ path('player_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les joueurs</a>
+    <a href="{{ path('training_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les entraînements</a>
+    <a href="{{ path('team_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all text-center">Gérer les équipes</a>
+    <a href="{{ path('game_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les matchs</a>
+    <a href="{{ path('equipment_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all text-center">Gérer les équipements</a>
+</div>
+    
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
         <div class="bg-white border-2 border-slate-900 p-4 ">
@@ -54,13 +62,14 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <a href="{{ path('training_show', {'id': nextTraining.id}) }}" class="absolute inset-0 z-10" aria-label="Voir l'entraînement"></a>
-
-        <div class="bg-white border-4 border-slate-900 p-6 ">
+       
+        <div class="bg-white border-4 border-slate-900 p-6 relative group ">
             <div class="flex justify-between items-start mb-4">
                 <span
                     class="bg-slate-900 text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest italic">Séance</span>
                 {% if nextTraining %}
+                 <a href="{{ path('training_show', {'id': nextTraining.id}) }}" class="absolute inset-0 z-10" aria-label="Voir l'entraînement"></a>
+
                 <span class="text-indigo-600 font-black text-xs uppercase">{{ nextTraining.date|date('d/m/Y') }}</span>
                 {% endif %}
             </div>
@@ -79,7 +88,7 @@
                 {% endif %}
             </p>
             <a href="{{ path('attendance_take_mass', {'type': 'training', 'id': nextTraining.id}) }}"
-                class="block text-center bg-indigo-600 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-slate-900 transition-all active:translate-x-1 active:translate-y-1">
+                class="relative z-20 block text-center bg-indigo-600 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-slate-900 transition-all active:translate-x-1 active:translate-y-1">
                 Gérer les présences
             </a>
             {% else %}
@@ -91,12 +100,13 @@
             {% endif %}
         </div>
 
-        <div class="bg-white border-4 border-slate-900 p-6 ">
-             <a href="{{ path('game_show', {'id': nextGame.id}) }}" class="absolute inset-0 z-10" aria-label="Voir l'entraînement"></a>
+        <div class="bg-white border-4 border-slate-900 p-6 relative group">
+            
             <div class="flex justify-between items-start mb-4">
                 <span
                     class="bg-indigo-600 text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest italic">Compétition</span>
                 {% if nextGame %}
+                 <a href="{{ path('game_show', {'id': nextGame.id}) }}" class="absolute inset-0 z-10" aria-label="Voir l'entraînement"></a>
                 <span class="text-slate-900 font-black text-xs uppercase">{{ nextGame.date|date('d/m/Y') }}</span>
                 {% endif %}
             </div>
@@ -109,7 +119,7 @@
                 📍 Lieu : {{ nextGame.place }}
             </p>
             <a href="{{ path('attendance_take_mass', {'type': 'game', 'id': nextGame.id}) }}"
-                class="block text-center bg-slate-900 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-indigo-600 transition-all active:translate-x-1 active:translate-y-1">
+                class="relative z-20 block text-center bg-slate-900 text-white py-4 font-black uppercase text-xs tracking-widest hover:bg-indigo-600 transition-all active:translate-x-1 active:translate-y-1">
                 Gérer les présences
             </a>
             {% else %}
@@ -124,30 +134,6 @@
     </div>
 
 
-    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <a href="{{ path('player_index') }}"
-            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
-            Gérer les joueurs
-        </a>
-        <a href="{{ path('training_index') }}"
-            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
-            Gérer les entraînements
-        </a>
-
-        <a href="{{ path('team_index') }}"
-            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all text-center">
-            Gérer les équipes
-        </a>
-        <a href="{{ path('game_index') }}"
-            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">
-            Gérer les matchs
-        </a>
-
-        <a href="{{ path('equipment_index') }}"
-            class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all text-center">
-            Gérer les équipements
-        </a>
-    </div>
 
 </div>
 {% endblock %}
