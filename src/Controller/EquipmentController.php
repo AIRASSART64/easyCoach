@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Equipment;
 use App\Form\EquipmentFormType;
 use App\Repository\EquipmentRepository;
+use App\Service\StockService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +16,23 @@ use Symfony\Component\Routing\Attribute\Route;
 final class EquipmentController extends AbstractController
 {
     #[Route('/', name: 'equipment_index', methods:['GET'])]
-    public function index(EquipmentRepository $equipmentRepository): Response
+    public function index(EquipmentRepository $equipmentRepository , StockService $stockService): Response
     {
         $equipments = $equipmentRepository->findBy( [
             'coach'=>$this->getUser()
         ]);
+        $equipmentData = [];
+
+        foreach ($equipments as $equipment) {
+        $equipmentData[] = [
+            'equipment' => $equipment,
+            'currentStock' => $stockService->calculateCurrentStock($equipment),
+            'isLow' => $stockService->isStockLow($equipment)
+        ];
+    }
         
         return $this->render('equipment/index.html.twig', [
-            'equipments' => $equipments
+            'equipments' => $equipmentData
         ]);
     }
       #[Route('/new', name:'equipment_new', methods:['GET', 'POST'])]
