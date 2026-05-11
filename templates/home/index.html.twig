@@ -28,32 +28,24 @@
             </a>
       
     </section>
-
-       <div class="hidden md:grid mt-10 mb-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-    <a href="{{ path('player_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les joueurs</a>
-    <a href="{{ path('training_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les entraînements</a>
-    <a href="{{ path('team_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all text-center">Gérer les équipes</a>
-    <a href="{{ path('game_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les matchs</a>
-    <a href="{{ path('equipment_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all text-center">Gérer les équipements</a>
-</div>
     
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        <div class="bg-white border-2 border-slate-900 p-4 ">
-            <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Effectif</span>
-            <span class="text-2xl font-black text-slate-900">{{ countPlayers }}</span>
+        <div class="bg-indigo-600  p-4 ">
+            <span class="block text-[9px] font-black text-white uppercase tracking-tighter">Effectif</span>
+            <span class="text-2xl font-black text-white">{{ countPlayers }}</span>
         </div>
-        <div class="bg-white border-2 border-slate-900 p-4 ">
-            <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Assiduité</span>
-            <span class="text-2xl font-black text-indigo-600">{{ attendanceRate }}%</span>
+        <div class="bg-black  p-4 ">
+            <span class="block text-[9px] font-black text-white uppercase tracking-tighter">Assiduité</span>
+            <span class="text-2xl font-black text-white">{{ attendanceRate }}%</span>
         </div>
-        <div class="bg-white border-2 border-slate-900 p-4 ">
-            <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Blessés</span>
-            <span class="text-2xl font-black text-red-500">{{ injuredCount }}</span>
+        <div class="bg-indigo-600 p-4 ">
+            <span class="block text-[9px] font-black text-white uppercase tracking-tighter">Blessés</span>
+            <span class="text-2xl font-black text-white">{{ injuredCount }}</span>
         </div>
-        <div class="bg-white border-2 border-slate-900 p-4 ">
-            <span class="block text-[9px] font-black text-slate-400 uppercase tracking-tighter">Matchs</span>
-            <span class="text-2xl font-black text-slate-900">{{ countGames }}</span>
+        <div class="bg-black  p-4 ">
+            <span class="block text-[9px] font-black text-white uppercase tracking-tighter">Matchs</span>
+            <span class="text-2xl font-black text-white">{{ countGames }}</span>
         </div>
     </div>
 
@@ -132,7 +124,13 @@
         </div>
 
     </div>
-
+   <div class="hidden md:grid mt-10 mb-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <a href="{{ path('player_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les joueurs</a>
+    <a href="{{ path('training_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les entraînements</a>
+    <a href="{{ path('team_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all text-center">Gérer les équipes</a>
+    <a href="{{ path('game_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-slate-900 hover:text-white transition-all text-center">Gérer les matchs</a>
+    <a href="{{ path('equipment_index') }}" class="flex items-center justify-center p-4 border-2 border-slate-900 font-black uppercase text-[10px] tracking-widest hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all text-center">Gérer les équipements</a>
+     </div>
 
 
 </div>
