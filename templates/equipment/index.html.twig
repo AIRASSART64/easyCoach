@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="max-w-3xl mx-auto px-4 mt-8 pb-20">
+<div class="max-w-4xl mx-auto px-4 mt-8 pb-20">
     
     <div class="mb-10">
         <h2 class="text-2xl font-black uppercase tracking-tighter text-slate-900 leading-none mb-4">
@@ -14,10 +14,8 @@
         </a>
     </div>
 
-    <div class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        
-        
         {% for item in equipments %}
         
             {% set equipment = item.equipment %}
@@ -25,12 +23,12 @@
             {% set isLowStock = item.isLow %}
             {% set minStock = equipment.alertLevel|default(0) %}
 
-             <a href="{{ path('equipment_show', {id: equipment.id}) }}"
-
-                    </a>
+            
 
             <div class="bg-white border-4 border-slate-900 p-6 flex flex-col justify-between relative overflow-hidden group">
+                 <a href="{{ path('equipment_show', {id: equipment.id}) }}"
 
+                    </a>
                 <span class="absolute top-0 left-0 bg-slate-900 text-white text-[8px] font-black px-3 py-1 uppercase tracking-tighter italic z-20">
                     {{ equipment.category|default('Général') }}
                 </span>

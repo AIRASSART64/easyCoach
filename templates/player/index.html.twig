@@ -19,9 +19,11 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {% for player in players %}
-        <div
-            class="bg-white border-4 border-slate-900 p-6 flex flex-col justify-between relative overflow-hidden group ">
-
+        
+        <div class="bg-white border-4 border-slate-900 p-6 flex flex-col justify-between relative overflow-hidden group ">
+            <a href="{{ path('player_show', {id: player.id}) }}"
+                    
+                </a>
             <span
                 class="absolute top-0 left-0 bg-slate-900 text-white text-[8px] font-black px-3 py-1 uppercase tracking-tighter italic">
                 {% if player.teams|length > 0 %}
@@ -51,13 +53,6 @@
 
 
             <div class="flex flex-wrap gap-2 border-t-2 border-slate-900 pt-4">
-
-
-                <a href="{{ path('player_show', {id: player.id}) }}"
-                    class="flex-1 text-center text-[9px] font-black uppercase tracking-widest bg-slate-900 text-white px-2 py-2 hover:bg-indigo-600 transition-colors">
-                    Voir
-                </a>
-
 
                 <a href="{{ path('player_update', {id: player.id}) }}"
                     class="flex-1 text-center text-[9px] font-black uppercase tracking-widest border-2 border-slate-900 px-2 py-2 hover:bg-slate-900 hover:text-white transition-all">
